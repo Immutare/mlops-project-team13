@@ -116,7 +116,6 @@ class ClassifierModel (InformalModelInterface):
 
         return (Xtrain, ytrain, Xtest, ytest, Xval, yval)
 
-    def searchBestEstimator(self, X_train, y_train):
         # Peso de las clases de acuerdo al porcentaje de los datos encontrados en EDA
         # con la finalidad de compensar el desbalanceo de datos
         # el 27% de los datos corresponde a la clase "high risk:0" 
