@@ -20,3 +20,8 @@ ipython kernel install --user --name=venv
 pip install -r requirements.txt
 ```
 
+## Como ejecutar pruebas?
+Dentro de la raiz del proyecto puedes ejecutar el siguiente comando:
+```
+pytest -v .\tests\test_modelclassifier.py
+```
