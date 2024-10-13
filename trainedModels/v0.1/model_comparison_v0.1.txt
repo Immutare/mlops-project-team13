@@ -1,0 +1,3 @@
+Mejor modelo: KNN basado en la precisión para 'high risk'.
+Precision: 0.8815165876777251
+F1-Score: 0.8532110091743119
