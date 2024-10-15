@@ -1,0 +1,39 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python pipeline/prepare.py dataset/MaternalHealthRiskDataSet.csv
+    deps:
+    - path: dataset/MaternalHealthRiskDataSet.csv
+      hash: md5
+      md5: 7fc69b1991ca593482f0fa6d4db2ef8b
+      size: 30290
+    - path: pipeline/prepare.py
+      hash: md5
+      md5: fe2c11de636e9ad9f277d3df2b8c4aaf
+      size: 1057
+    params:
+      params.yaml:
+        prepare.seed: 42
+        prepare.train_split: 0.2
+    outs:
+    - path: data/prepared
+      hash: md5
+      md5: 1aad9a8cd561e21dd0b0a1e67eac7c6c.dir
+      size: 33095
+      nfiles: 2
+  preprocess:
+    cmd: python pipeline/preprocess.py data/prepared data/preprocessed
+    deps:
+    - path: pipeline/preprocess.py
+      hash: md5
+      md5: 32dfabe530136eaf1467f19bc9ecdef9
+      size: 3062
+    params:
+      params.yaml:
+        version_label: '0.1'
+    outs:
+    - path: data/preprocessed
+      hash: md5
+      md5: 39999250e63502f3f9ad59c726626d75.dir
+      size: 102599
+      nfiles: 4

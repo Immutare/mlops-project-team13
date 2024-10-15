@@ -31,6 +31,15 @@ class ClassifierModel (InformalModelInterface):
     @IQ_LOWER_RANGE.setter
     def IQ_LOWER_RANGE(self, value):
         self._IQ_LOWER_RANGE = value
+
+    @property
+    def label_encoder_filename(self) -> str:
+        return self._label_encoder_filename
+    
+    @label_encoder_filename.setter
+    def label_encoder_filename(self, value):
+        self._label_encoder_filename = value
+
     
 
     def __init__(self, versionLabel: str, randomSeed = 42, asTesting = False):
@@ -47,7 +56,7 @@ class ClassifierModel (InformalModelInterface):
         
         self.knn_model_filename = f"{self.BASE_DUMP_DIRECTORY}knn_model_{versionLabel}.pkl"
         self.rf_model_filename = f"{self.BASE_DUMP_DIRECTORY}rf_model_{versionLabel}.pkl"
-        self.label_encoder_filename = f"{self.BASE_DUMP_DIRECTORY}label_encoder_{versionLabel}.pkl"
+        self._label_encoder_filename = f"{self.BASE_DUMP_DIRECTORY}label_encoder_{versionLabel}.pkl"
         self.comparison_filename = f"{self.BASE_DUMP_DIRECTORY}model_comparison_{versionLabel}.txt"
 
     def cleanAndPreprocessData(self, X: DataFrame, y: DataFrame):

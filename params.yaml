@@ -1,0 +1,9 @@
+version_label: "0.1"
+prepare:
+  train_split: 0.20
+  seed: 42
+train:
+  seed: 42
+  n_est: 50
+  min_split: 0.01
+

@@ -1,0 +1,20 @@
+stages:
+  prepare:
+    cmd: python pipeline/prepare.py dataset/MaternalHealthRiskDataSet.csv
+    deps:
+      - pipeline/prepare.py
+      - dataset/MaternalHealthRiskDataSet.csv
+    params:
+      - prepare.seed
+      - prepare.train_split 
+    outs:
+      - data/prepared
+
+  preprocess:
+    cmd: python pipeline/preprocess.py data/prepared data/preprocessed
+    deps: 
+      - pipeline/preprocess.py
+    params:
+      - version_label
+    outs:
+      - data/preprocessed
