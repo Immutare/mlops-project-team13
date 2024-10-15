@@ -26,3 +26,13 @@ Dentro de la raiz del proyecto puedes ejecutar el siguiente comando:
 pytest -v .\tests\test_modelclassifier.py
 ```
 ##Change to notify 
+
+
+# DVC
+Para ejecutar los pipelines:
+```
+dvc repro
+```
+
+## Documentacion:
+https://dvc.org/doc/start/data-pipelines/data-pipelines
