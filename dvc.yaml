@@ -18,22 +18,39 @@ stages:
     outs:
       - data/preprocessed
 
-  train:
-    cmd: python pipeline/train.py data/preprocessed model
+  train_knn:
+    cmd: python pipeline/training/train_knn.py data/preprocessed model
     deps:
-      - pipeline/train.py
+      - pipeline/training/train_knn.py
       - data/preprocessed/train.csv
       - data/preprocessed/test.csv
     params:
-      - train.seed
-      - train.n_neighbors
-      - train.weights 
-      - train.p  
+      - train_knn.seed
+      - train_knn.n_neighbors
+      - train_knn.weights 
+      - train_knn.p  
       - version_label
       - mlflow.experiment_name
       - mlflow.tracking_uri
     outs:
       - model/knn_model.pkl
+  
+  train_decision_tree:
+    cmd: python pipeline/training/train_decisiontree.py data/preprocessed model
+    deps:
+      - pipeline/training/train_decisiontree.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_decision_tree.seed
+      - train_decision_tree.criterion
+      - train_decision_tree.max_depth 
+      - train_decision_tree.min_samples_split  
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/decision_tree_model.pkl
 
   evaluate:
     cmd: python pipeline/evaluate.py data/preprocessed model
@@ -41,4 +58,5 @@ stages:
       - pipeline/evaluate.py
       - data/preprocessed/test.csv
       - model/knn_model.pkl
+      - model/decision_tree_model.pkl
     outs: []

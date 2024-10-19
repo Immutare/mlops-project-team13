@@ -1,0 +1,129 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python pipeline/prepare.py dataset/MaternalHealthRiskDataSet.csv
+    deps:
+    - path: dataset/MaternalHealthRiskDataSet.csv
+      hash: md5
+      md5: 7fc69b1991ca593482f0fa6d4db2ef8b
+      size: 30290
+    params:
+      params.yaml:
+        prepare.seed: 42
+        prepare.train_split: 0.2
+    outs:
+    - path: data/prepared
+      hash: md5
+      md5: 4178df2d56be556a5a0b5e47d7995d8e.dir
+      size: 33095
+      nfiles: 2
+  preprocess:
+    cmd: python pipeline/preprocess.py data/prepared data/preprocessed
+    deps:
+    - path: data/prepared
+      hash: md5
+      md5: 4178df2d56be556a5a0b5e47d7995d8e.dir
+      size: 33095
+      nfiles: 2
+    params:
+      params.yaml:
+        version_label: '0.1'
+    outs:
+    - path: data/preprocessed
+      hash: md5
+      md5: 1586b155dfb0f6f50ecaa1140b6c4ba9.dir
+      size: 102652
+      nfiles: 4
+  train_knn:
+    cmd: python pipeline/training/train_knn.py data/preprocessed model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 15e279f39e3ee621e7dc00dedf1fcf6d
+      size: 19989
+    - path: data/preprocessed/train.csv
+      hash: md5
+      md5: d8f63b05ca88c3c7c4634701be890ba8
+      size: 81533
+    - path: pipeline/training/train_knn.py
+      hash: md5
+      md5: ca55a7b0da4c060b7a9d59651955fc1f
+      size: 3360
+    params:
+      params.yaml:
+        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.tracking_uri: http://127.0.0.1:5000
+        train_knn.n_neighbors:
+        - 3
+        - 8
+        - 21
+        train_knn.p:
+        - 1
+        - 2
+        train_knn.seed: 42
+        train_knn.weights:
+        - uniform
+        - distance
+        version_label: '0.1'
+    outs:
+    - path: model/knn_model.pkl
+      hash: md5
+      md5: e140fa9a5e8289f7d921194faed0f8d4
+      size: 96598
+  train_decision_tree:
+    cmd: python pipeline/training/train_decisiontree.py data/preprocessed model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 15e279f39e3ee621e7dc00dedf1fcf6d
+      size: 19989
+    - path: data/preprocessed/train.csv
+      hash: md5
+      md5: d8f63b05ca88c3c7c4634701be890ba8
+      size: 81533
+    - path: pipeline/training/train_decisiontree.py
+      hash: md5
+      md5: ed7199769212344527db21c1dfbd81d6
+      size: 4970
+    params:
+      params.yaml:
+        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.tracking_uri: http://127.0.0.1:5000
+        train_decision_tree.criterion:
+        - gini
+        - entropy
+        train_decision_tree.max_depth:
+        - 4
+        - 6
+        - 8
+        - 10
+        - 12
+        train_decision_tree.min_samples_split:
+        - 2
+        - 4
+        train_decision_tree.seed: 42
+        version_label: '0.1'
+    outs:
+    - path: model/decision_tree_model.pkl
+      hash: md5
+      md5: a1642a2e7d1ec92b1c6a1ece469f341b
+      size: 22529
+  evaluate:
+    cmd: python pipeline/evaluate.py data/preprocessed model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 15e279f39e3ee621e7dc00dedf1fcf6d
+      size: 19989
+    - path: model/decision_tree_model.pkl
+      hash: md5
+      md5: a1642a2e7d1ec92b1c6a1ece469f341b
+      size: 22529
+    - path: model/knn_model.pkl
+      hash: md5
+      md5: e140fa9a5e8289f7d921194faed0f8d4
+      size: 96598
+    - path: pipeline/evaluate.py
+      hash: md5
+      md5: 3c4fb7b19192c5ebff909b0d21728d3d
+      size: 2130
