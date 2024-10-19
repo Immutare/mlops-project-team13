@@ -5,13 +5,13 @@ stages:
       - dataset/MaternalHealthRiskDataSet.csv
     params:
       - prepare.seed
-      - prepare.train_split 
+      - prepare.train_split
     outs:
       - data/prepared
 
   preprocess:
     cmd: python pipeline/preprocess.py data/prepared data/preprocessed
-    deps: 
+    deps:
       - data/prepared
     params:
       - version_label
@@ -27,14 +27,14 @@ stages:
     params:
       - train_knn.seed
       - train_knn.n_neighbors
-      - train_knn.weights 
-      - train_knn.p  
+      - train_knn.weights
+      - train_knn.p
       - version_label
       - mlflow.experiment_name
       - mlflow.tracking_uri
     outs:
       - model/knn_model.pkl
-  
+
   train_decision_tree:
     cmd: python pipeline/training/train_decisiontree.py data/preprocessed model
     deps:
@@ -44,13 +44,32 @@ stages:
     params:
       - train_decision_tree.seed
       - train_decision_tree.criterion
-      - train_decision_tree.max_depth 
-      - train_decision_tree.min_samples_split  
+      - train_decision_tree.max_depth
+      - train_decision_tree.min_samples_split
       - version_label
       - mlflow.experiment_name
       - mlflow.tracking_uri
     outs:
       - model/decision_tree_model.pkl
+
+  train_random_forest:
+    cmd: python pipeline/training/train_random_forest.py data/preprocessed model
+    deps:
+      - pipeline/training/train_random_forest.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_random_forest.seed
+      - train_random_forest.n_estimators
+      - train_random_forest.criterion
+      - train_random_forest.max_depth
+      - train_random_forest.max_features
+      - train_random_forest.min_samples_leaf
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/random_forest_model.pkl
 
   evaluate:
     cmd: python pipeline/evaluate.py data/preprocessed model
@@ -59,4 +78,5 @@ stages:
       - data/preprocessed/test.csv
       - model/knn_model.pkl
       - model/decision_tree_model.pkl
+      - model/random_forest_model.pkl
     outs: []
