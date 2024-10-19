@@ -1,0 +1,15 @@
+artifact_uri: file:///home/armando/Documents/MLOPS/Proyecto/mlops-project-team13/mlruns/877879851261190342/b7cb1703aa2840b495eda9e731afb53e/artifacts
+end_time: 1729230861734
+entry_point_name: ''
+experiment_id: '877879851261190342'
+lifecycle_stage: active
+run_id: b7cb1703aa2840b495eda9e731afb53e
+run_name: exultant-stag-999
+run_uuid: b7cb1703aa2840b495eda9e731afb53e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729230861697
+status: 3
+tags: []
+user_id: armando

@@ -12,7 +12,7 @@ def main():
     if len(sys.argv) != 2:
         sys.stderr.write("Arguments error. Usage:\n")
         sys.stderr.write("\tpython prepare.py data-file\n")
-        sys.exit(1)
+        sys.exit(1) 
 
     # Test data set split ratio
     trainSplit = params["train_split"]

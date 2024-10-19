@@ -1,0 +1,15 @@
+artifact_uri: file:///home/armando/Documents/MLOPS/Proyecto/mlops-project-team13/mlruns/496125123025849901/51e1e9e8bdaf4ee4be6a2c868df240c2/artifacts
+end_time: 1729296500531
+entry_point_name: ''
+experiment_id: '496125123025849901'
+lifecycle_stage: active
+run_id: 51e1e9e8bdaf4ee4be6a2c868df240c2
+run_name: marvelous-sloth-433
+run_uuid: 51e1e9e8bdaf4ee4be6a2c868df240c2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729296248328
+status: 3
+tags: []
+user_id: armando

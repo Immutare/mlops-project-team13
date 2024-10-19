@@ -1,0 +1,15 @@
+artifact_uri: file:///home/armando/Documents/MLOPS/Proyecto/mlops-project-team13/mlruns/276688963930956265/7b0600001e1842d1a357f75ac768fabe/artifacts
+end_time: 1729302194923
+entry_point_name: ''
+experiment_id: '276688963930956265'
+lifecycle_stage: active
+run_id: 7b0600001e1842d1a357f75ac768fabe
+run_name: Train KNN with [3, 8, 24] neighbors
+run_uuid: 7b0600001e1842d1a357f75ac768fabe
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1729302186604
+status: 3
+tags: []
+user_id: armando
