@@ -1,0 +1,44 @@
+stages:
+  prepare:
+    cmd: python pipeline/prepare.py dataset/MaternalHealthRiskDataSet.csv
+    deps:
+      - dataset/MaternalHealthRiskDataSet.csv
+    params:
+      - prepare.seed
+      - prepare.train_split 
+    outs:
+      - data/prepared
+
+  preprocess:
+    cmd: python pipeline/preprocess.py data/prepared data/preprocessed
+    deps: 
+      - data/prepared
+    params:
+      - version_label
+    outs:
+      - data/preprocessed
+
+  train:
+    cmd: python pipeline/train.py data/preprocessed model
+    deps:
+      - pipeline/train.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train.seed
+      - train.n_neighbors
+      - train.weights 
+      - train.p  
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/knn_model.pkl
+
+  evaluate:
+    cmd: python pipeline/evaluate.py data/preprocessed model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/knn_model.pkl
+    outs: []

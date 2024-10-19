@@ -1,6 +1,13 @@
 #VENV
 .venv/
 
+#MLFlow
+mlruns/
+model/mlflow_run_id.txt
+
+#DVC
+dvc.lock
+
 #Tests
 dump/
 
@@ -167,4 +174,3 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 /knn_classification_report.txt
-/data
