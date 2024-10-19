@@ -1,10 +1,15 @@
 import os
 import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# import ../model/classifiermodel.py
+from model.classifiermodel import ClassifierModel
+
 import joblib
 import pandas as pd
 import yaml
-from model.classifiermodel import ClassifierModel
+
 import mlflow
+
 
 def main():
     if len(sys.argv) != 3:
@@ -26,7 +31,7 @@ def main():
     y_train = train_data['0']
 
     # Cargar los parámetros del archivo params.yaml
-    params = yaml.safe_load(open("params.yaml"))["train"]
+    params = yaml.safe_load(open("params.yaml"))["train_knn"]
     version_label = yaml.safe_load(open("params.yaml"))["version_label"]
     mlflow_params = yaml.safe_load(open("params.yaml"))["mlflow"]
 

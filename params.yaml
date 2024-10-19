@@ -2,13 +2,18 @@ version_label: "0.1"
 prepare:
   train_split: 0.20
   seed: 42
-train:
+train_knn:
   seed: 42
   n_est: 50
   min_split: 0.01
   n_neighbors: [3, 8, 21] 
   weights: ["uniform", "distance"]  
   p: [1, 2]
+train_decision_tree:
+  seed: 42
+  criterion: ['gini', 'entropy']
+  max_depth: [4, 6, 8, 10, 12]
+  min_samples_split: [2, 4]
 mlflow:
   run_name: "Train KNN with {n_neighbors} neighbors" 
   experiment_name: "MaternalHealthRisk_V5"
