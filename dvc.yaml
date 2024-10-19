@@ -71,12 +71,26 @@ stages:
     outs:
       - model/random_forest_model.pkl
 
-  evaluate:
-    cmd: python pipeline/evaluate.py data/preprocessed model
+  evaluate_knn:
+    cmd: python pipeline/evaluate.py data/preprocessed model knn_model
     deps:
       - pipeline/evaluate.py
       - data/preprocessed/test.csv
       - model/knn_model.pkl
+    outs: []
+
+  evaluate_decision_tree:
+    cmd: python pipeline/evaluate.py data/preprocessed model decision_tree_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
       - model/decision_tree_model.pkl
+    outs: []
+
+  evaluate_random_forest:
+    cmd: python pipeline/evaluate.py data/preprocessed model random_forest_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
       - model/random_forest_model.pkl
     outs: []

@@ -86,7 +86,7 @@ def main():
     mlflow.set_tracking_uri(mlflow_params['tracking_uri']) 
 
     # Asignar el nombre del run usando el formato definido en params.yaml
-    run_name = f"Train Decision tree"
+    run_name = mlflow_params["run_name"].format(model="Decision Tree")
 
     # Entrenar y guardar el modelo DecisionTree usando los parámetros de `params.yaml`
     with mlflow.start_run(run_name=run_name) as run:

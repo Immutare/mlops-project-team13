@@ -91,12 +91,11 @@ def main():
     mlflow.set_tracking_uri(mlflow_params['tracking_uri']) 
 
     # Asignar el nombre del run usando el formato definido en params.yaml
-    run_name = f"Train Random Forest"
+    run_name = mlflow_params["run_name"].format(model="Random Forest")
 
     # Entrenar y guardar el modelo RandomForest usando los parámetros de `params.yaml`
     with mlflow.start_run(run_name=run_name) as run:
-        random_forest_model, best_params = train_random_forest(X_train, y_train, **params     
-        )
+        random_forest_model, best_params = train_random_forest(X_train, y_train, **params)
 
         # Guardar los mejores hiperparámetros en MLflow
         mlflow.log_params(best_params)
@@ -112,7 +111,7 @@ def main():
     # Guardar el modelo en el directorio de salida
     model_output_path = os.path.join(out_path, "random_forest_model.pkl")
     joblib.dump(random_forest_model, model_output_path)
-    sys.stderr.write(f"Modelo Random Forest guardado en {model_output_path}\n")
+    sys.stdout.write(f"Modelo Random Forest guardado en {model_output_path}\n")
 
 if __name__ == "__main__":
     main()

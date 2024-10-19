@@ -43,7 +43,7 @@ def main():
     mlflow.set_tracking_uri(mlflow_params['tracking_uri']) 
 
     # Asignar el nombre del run usando el formato definido en params.yaml
-    run_name = mlflow_params["run_name"].format(n_neighbors=params["n_neighbors"])
+    run_name = mlflow_params["run_name"].format(model="KNN")
 
     # Entrenar y guardar el modelo KNN usando los parámetros de `params.yaml`
     with mlflow.start_run(run_name=run_name) as run:

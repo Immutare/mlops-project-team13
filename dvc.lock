@@ -47,11 +47,11 @@ stages:
       size: 80827
     - path: pipeline/training/train_knn.py
       hash: md5
-      md5: 8e68a9a528dd38abe37d7160974edbd5
-      size: 3275
+      md5: 4144e5c5e4602cd6a5a56ef95a20eaed
+      size: 3253
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V6
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_knn.n_neighbors:
         - 3
@@ -83,11 +83,11 @@ stages:
       size: 80827
     - path: pipeline/training/train_decisiontree.py
       hash: md5
-      md5: 65ddac16921116d07bea9ffd22e48992
-      size: 4847
+      md5: 1f70e60de13ab2a1d67322c7f42bbf8b
+      size: 4880
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V6
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_decision_tree.criterion:
         - gini
@@ -144,11 +144,11 @@ stages:
       size: 80827
     - path: pipeline/training/train_random_forest.py
       hash: md5
-      md5: 04c3d32734b4e7776cf48f5062478b23
-      size: 4390
+      md5: b73a473d216fa53a8284cfd254e4f83b
+      size: 4409
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V6
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_random_forest.criterion:
         - gini
@@ -181,3 +181,48 @@ stages:
       hash: md5
       md5: 6f975f376691e7623561beb2d30be255
       size: 857713
+  evaluate_knn:
+    cmd: python pipeline/evaluate.py data/preprocessed model knn_model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 060ff3c090006e219c5db19717655941
+      size: 19452
+    - path: model/knn_model.pkl
+      hash: md5
+      md5: 627acd66b55c6795fc3817634f629c5c
+      size: 96630
+    - path: pipeline/evaluate.py
+      hash: md5
+      md5: 720506324f26914677e83b25f3d74cf9
+      size: 2141
+  evaluate_decision_tree:
+    cmd: python pipeline/evaluate.py data/preprocessed model decision_tree_model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 060ff3c090006e219c5db19717655941
+      size: 19452
+    - path: model/decision_tree_model.pkl
+      hash: md5
+      md5: fef10ef993de899456ffef5fa25e6bb6
+      size: 22561
+    - path: pipeline/evaluate.py
+      hash: md5
+      md5: 720506324f26914677e83b25f3d74cf9
+      size: 2141
+  evaluate_random_forest:
+    cmd: python pipeline/evaluate.py data/preprocessed model random_forest_model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 060ff3c090006e219c5db19717655941
+      size: 19452
+    - path: model/random_forest_model.pkl
+      hash: md5
+      md5: 6f975f376691e7623561beb2d30be255
+      size: 857713
+    - path: pipeline/evaluate.py
+      hash: md5
+      md5: 720506324f26914677e83b25f3d74cf9
+      size: 2141
