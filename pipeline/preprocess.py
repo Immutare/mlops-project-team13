@@ -40,7 +40,7 @@ def transformDF(dataframe: pd.DataFrame):
                      
     transformedDataframe = pd.concat([numericTransformed, pd.DataFrame(targetTransformed, dtype=int)], axis=1)
 
-    return transformedDataframe, labelEncoder
+    return transformedDataframe, labelEncoder 
 
 def saveLabelEncoder(labelEncoder, outputFolder, fileName):
     outputPath = os.path.join(outputFolder, fileName)

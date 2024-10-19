@@ -1,6 +1,13 @@
 #VENV
 .venv/
 
+#MLFlow
+mlruns/
+model/mlflow_run_id.txt
+
+#DVC
+dvc.lock
+
 #Tests
 dump/
 
