@@ -8,22 +8,6 @@ import yaml
 import mlflow
 
 def train_logistic(X, y, **kwargs):
-    """
-    Función para entrenar un modelo LogisticRegression utilizando búsqueda de hiperparámetros
-    con GridSearchCV.
-    
-    Parámetros:
-    -----------
-    X : numpy array o pandas DataFrame
-        Matriz de características (features) de los datos de entrenamiento.
-    y : numpy array o pandas Series
-        Etiquetas (labels) correspondientes a los datos de entrenamiento.
-    
-    Retorno:
-    --------
-    best_logistic_model : LogisticRegression
-        El mejor modelo LogisticRegression encontrado durante la búsqueda de hiperparámetros utilizando GridSearchCV.
-    """
     parameters = {
         'C': kwargs["C"],
         'max_iter': kwargs["max_iter"],
