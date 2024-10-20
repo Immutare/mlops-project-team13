@@ -194,8 +194,8 @@ stages:
       size: 96630
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 69b3144fe2f40768d4e7850106b499a3
-      size: 2037
+      md5: 404594b8efa899e30562094905031bc6
+      size: 1681
   evaluate_decision_tree:
     cmd: python pipeline/evaluate.py data/preprocessed model decision_tree_model
     deps:
@@ -209,8 +209,8 @@ stages:
       size: 22561
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 69b3144fe2f40768d4e7850106b499a3
-      size: 2037
+      md5: 404594b8efa899e30562094905031bc6
+      size: 1681
   evaluate_random_forest:
     cmd: python pipeline/evaluate.py data/preprocessed model random_forest_model
     deps:
@@ -224,5 +224,5 @@ stages:
       size: 857713
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 69b3144fe2f40768d4e7850106b499a3
-      size: 2037
+      md5: 404594b8efa899e30562094905031bc6
+      size: 1681

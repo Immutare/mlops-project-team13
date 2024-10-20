@@ -41,10 +41,10 @@ def main():
     mlflow.set_tracking_uri(mlflow_params['tracking_uri'])
 
     with mlflow.start_run(run_id=run_id):
-        mlflow.log_metric("accuracy_knn", accuracy_knn)
-        mlflow.log_metric("f1_score_knn", f1_knn)
-        mlflow.log_metric("precision_knn", precision_knn)
-        mlflow.log_metric("recall_knn", recall_knn)
+        mlflow.log_metric("accuracy", accuracy)
+        mlflow.log_metric("f1_score", f1)
+        mlflow.log_metric("precision", precision)
+        mlflow.log_metric("recall", recall)
 
 if __name__ == "__main__":
     main()

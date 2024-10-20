@@ -71,6 +71,19 @@ stages:
     outs:
       - model/random_forest_model.pkl
 
+  # train_logistic:
+  #   cmd: python pipeline/training/train_logistic.py data/preprocessed model
+  #   deps:
+  #     - pipeline/training/train_logistic.py
+  #     - data/preprocessed/train.csv
+  #     - data/preprocessed/test.csv
+  #   params:
+  #     - version_label
+  #     - mlflow.experiment_name
+  #     - mlflow.tracking_uri
+  #   outs:
+  #     - model/logistic_model.pkl
+
   evaluate_knn:
     cmd: python pipeline/evaluate.py data/preprocessed model knn_model
     deps:
@@ -94,3 +107,11 @@ stages:
       - data/preprocessed/test.csv
       - model/random_forest_model.pkl
     outs: []
+
+  # evaluate_logistic:
+  #   cmd: python pipeline/evaluate.py data/preprocessed model logistic_model
+  #   deps:
+  #     - pipeline/evaluate.py
+  #     - data/preprocessed/test.csv
+  #     - model/logistic_model.pkl
+  #   outs: []
