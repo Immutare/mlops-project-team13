@@ -22,6 +22,6 @@ train_random_forest:
   max_features: [10, 20, 30, 40]
   min_samples_leaf: [1, 2, 4]
 mlflow:
-  run_name: "Train model {model}"
-  experiment_name: "MaternalHealthRisk_V6"
+  run_name: "Run for {model}"
+  experiment_name: "MaternalHealthRisk_V7"
   tracking_uri: "http://127.0.0.1:5000"

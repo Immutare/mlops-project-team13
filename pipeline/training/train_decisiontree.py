@@ -111,7 +111,7 @@ def main():
     
         # Guardar el run_id para compartirlo con evaluate.py
         run_id = run.info.run_id
-        with open(os.path.join(out_path, "mlflow_run_id.txt"), "w") as f:
+        with open(os.path.join(out_path, "mlflow_run_id_decision_tree_model.txt"), "w") as f:
             f.write(run_id)
 
     # Guardar el modelo en el directorio de salida

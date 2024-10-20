@@ -33,7 +33,8 @@ def main():
     # Evaluar el rendimiento del modelo
     accuracy, f1, precision, recall = classifier_model.evaluate_model_performance(y_test, y_pred, model_name=model_name)
 
-    with open(os.path.join(model_path, "mlflow_run_id.txt"), "r") as f:
+    # Cargar el run_id almacenado por train.py
+    with open(os.path.join(model_path, f"mlflow_run_id_{model_name}.txt"), "r") as f:
         run_id = f.read().strip()
 
     mlflow.set_experiment(mlflow_params['experiment_name'])
@@ -44,9 +45,6 @@ def main():
         mlflow.log_metric("f1_score_knn", f1_knn)
         mlflow.log_metric("precision_knn", precision_knn)
         mlflow.log_metric("recall_knn", recall_knn)
-
-    # Mostrar el resultado de la evaluación
-    sys.stderr.write(f"Accuracy del modelo {model_name}: {accuracy}\n")
 
 if __name__ == "__main__":
     main()
