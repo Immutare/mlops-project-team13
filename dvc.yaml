@@ -71,6 +71,23 @@ stages:
     outs:
       - model/random_forest_model.pkl
 
+  train_svm:
+    cmd: python pipeline/training/train_svm.py data/preprocessed model
+    deps:
+      - pipeline/training/train_svm.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_svm.seed
+      - train_svm.C
+      - train_svm.kernel
+      - train_svm.gamma
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/svm_model.pkl
+
   # train_logistic:
   #   cmd: python pipeline/training/train_logistic.py data/preprocessed model
   #   deps:
@@ -106,6 +123,14 @@ stages:
       - pipeline/evaluate.py
       - data/preprocessed/test.csv
       - model/random_forest_model.pkl
+    outs: []
+    
+  evaluate_svm:
+    cmd: python pipeline/evaluate.py data/preprocessed model svm_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/svm_model.pkl
     outs: []
 
   # evaluate_logistic:

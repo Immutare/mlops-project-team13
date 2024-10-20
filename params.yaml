@@ -21,6 +21,11 @@ train_random_forest:
   max_depth: [4, 6, 8, 10, 12]
   max_features: [10, 20, 30, 40]
   min_samples_leaf: [1, 2, 4]
+train_svm:
+  seed: 42
+  C: [0.1, 1, 10]
+  kernel: ['linear', 'rbf']
+  gamma: ['scale', 'auto']
 mlflow:
   run_name: "Run for {model}"
   experiment_name: "MaternalHealthRisk_V7"
