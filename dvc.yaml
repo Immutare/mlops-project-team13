@@ -103,6 +103,23 @@ stages:
       - mlflow.tracking_uri
     outs:
       - model/logistic_model.pkl
+  
+  train_xgboost:
+    cmd: python pipeline/training/train_xgboost.py data/preprocessed model
+    deps:
+      - pipeline/training/train_xgboost.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_xgboost.max_depth
+      - train_xgboost.learning_rate
+      - train_xgboost.subsample
+      - train_xgboost.scoring
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/xgboost_model.pkl
 
   evaluate_knn:
     cmd: python pipeline/evaluate.py data/preprocessed model knn_model
@@ -142,4 +159,12 @@ stages:
       - pipeline/evaluate.py
       - data/preprocessed/test.csv
       - model/logistic_model.pkl
+    outs: []
+  
+  evaluate_xgboost:
+    cmd: python pipeline/evaluate.py data/preprocessed model xgboost_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/xgboost_model.pkl
     outs: []
