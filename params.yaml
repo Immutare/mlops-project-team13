@@ -30,8 +30,13 @@ train_logistic:
   seed: 42
   C: [0.001, 0.01, 0.1, 1, 10, 100, 1000]  
   max_iter: [100, 200, 300, 500]          
-  solver: ['lbfgs', 'liblinear', 'saga']   
+  solver: ['lbfgs', 'liblinear', 'saga']
+train_xgboost:
+  max_depth: [3, 5, 7]
+  learning_rate: [0.1, 0.01, 0.001] 
+  subsample: [0.5, 0.7, 1]          
+  scoring: "accuracy"      
 mlflow:
   run_name: "Run for {model}"
-  experiment_name: "MaternalHealthRisk_Mariana"
+  experiment_name: "MaternalHealthRisk_V5"
   tracking_uri: "http://127.0.0.1:5000"
