@@ -1,0 +1,170 @@
+stages:
+  prepare:
+    cmd: python pipeline/prepare.py dataset/MaternalHealthRiskDataSet.csv
+    deps:
+      - dataset/MaternalHealthRiskDataSet.csv
+    params:
+      - prepare.seed
+      - prepare.train_split
+    outs:
+      - data/prepared
+
+  preprocess:
+    cmd: python pipeline/preprocess.py data/prepared data/preprocessed
+    deps:
+      - data/prepared
+    params:
+      - version_label
+    outs:
+      - data/preprocessed
+
+  train_knn:
+    cmd: python pipeline/training/train_knn.py data/preprocessed model
+    deps:
+      - pipeline/training/train_knn.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_knn.seed
+      - train_knn.n_neighbors
+      - train_knn.weights
+      - train_knn.p
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/knn_model.pkl
+
+  train_decision_tree:
+    cmd: python pipeline/training/train_decisiontree.py data/preprocessed model
+    deps:
+      - pipeline/training/train_decisiontree.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_decision_tree.seed
+      - train_decision_tree.criterion
+      - train_decision_tree.max_depth
+      - train_decision_tree.min_samples_split
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/decision_tree_model.pkl
+
+  train_random_forest:
+    cmd: python pipeline/training/train_random_forest.py data/preprocessed model
+    deps:
+      - pipeline/training/train_random_forest.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_random_forest.seed
+      - train_random_forest.n_estimators
+      - train_random_forest.criterion
+      - train_random_forest.max_depth
+      - train_random_forest.max_features
+      - train_random_forest.min_samples_leaf
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/random_forest_model.pkl
+
+  train_svm:
+    cmd: python pipeline/training/train_svm.py data/preprocessed model
+    deps:
+      - pipeline/training/train_svm.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_svm.seed
+      - train_svm.C
+      - train_svm.kernel
+      - train_svm.gamma
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/svm_model.pkl
+
+  train_logistic:
+    cmd: python pipeline/training/train_logistic.py data/preprocessed model
+    deps:
+      - pipeline/training/train_logistic.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_logistic.seed
+      - train_logistic.C
+      - train_logistic.max_iter
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/logistic_model.pkl
+  
+  train_xgboost:
+    cmd: python pipeline/training/train_xgboost.py data/preprocessed model
+    deps:
+      - pipeline/training/train_xgboost.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_xgboost.max_depth
+      - train_xgboost.learning_rate
+      - train_xgboost.subsample
+      - train_xgboost.scoring
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/xgboost_model.pkl
+
+  evaluate_knn:
+    cmd: python pipeline/evaluate.py data/preprocessed model knn_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/knn_model.pkl
+    outs: []
+
+  evaluate_decision_tree:
+    cmd: python pipeline/evaluate.py data/preprocessed model decision_tree_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/decision_tree_model.pkl
+    outs: []
+
+  evaluate_random_forest:
+    cmd: python pipeline/evaluate.py data/preprocessed model random_forest_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/random_forest_model.pkl
+    outs: []
+    
+  evaluate_svm:
+    cmd: python pipeline/evaluate.py data/preprocessed model svm_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/svm_model.pkl
+    outs: []
+
+  evaluate_logistic:
+    cmd: python pipeline/evaluate.py data/preprocessed model logistic_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/logistic_model.pkl
+    outs: []
+  
+  evaluate_xgboost:
+    cmd: python pipeline/evaluate.py data/preprocessed model xgboost_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/xgboost_model.pkl
+    outs: []

@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 import joblib
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
@@ -31,6 +32,15 @@ class ClassifierModel (InformalModelInterface):
     @IQ_LOWER_RANGE.setter
     def IQ_LOWER_RANGE(self, value):
         self._IQ_LOWER_RANGE = value
+
+    @property
+    def label_encoder_filename(self) -> str:
+        return self._label_encoder_filename
+    
+    @label_encoder_filename.setter
+    def label_encoder_filename(self, value):
+        self._label_encoder_filename = value
+
     
 
     def __init__(self, versionLabel: str, randomSeed = 42, asTesting = False):
@@ -41,13 +51,13 @@ class ClassifierModel (InformalModelInterface):
 
 
         self.MODEL_DUMP_PATH = 'dump/'
-        self.BASE_DUMP_DIRECTORY = f"{self.MODEL_DUMP_PATH}{"test/" if self.USE_AS_TEST else ""}"
+        self.BASE_DUMP_DIRECTORY = f"{self.MODEL_DUMP_PATH}{'test/' if self.USE_AS_TEST else ''}"
 
         # Definir los nombres de los archivos de los modelos
         
         self.knn_model_filename = f"{self.BASE_DUMP_DIRECTORY}knn_model_{versionLabel}.pkl"
         self.rf_model_filename = f"{self.BASE_DUMP_DIRECTORY}rf_model_{versionLabel}.pkl"
-        self.label_encoder_filename = f"{self.BASE_DUMP_DIRECTORY}label_encoder_{versionLabel}.pkl"
+        self._label_encoder_filename = f"{self.BASE_DUMP_DIRECTORY}label_encoder_{versionLabel}.pkl"
         self.comparison_filename = f"{self.BASE_DUMP_DIRECTORY}model_comparison_{versionLabel}.txt"
 
     def cleanAndPreprocessData(self, X: DataFrame, y: DataFrame):
@@ -411,8 +421,9 @@ class ClassifierModel (InformalModelInterface):
 
         # Obtener los mejores hiperparámetros encontrados
         best_knn_model = grid_search.best_estimator_
+        best_params = grid_search.best_params_
 
-        return best_knn_model
+        return best_knn_model, best_params
 
     def trainRF(self, X, Y, class_weight, n_estimators=[5, 10, 20, 50], 
                         max_depth=[3, 5, 10], min_samples_split=[3, 5, 10, 20], 
@@ -642,3 +653,38 @@ class ClassifierModel (InformalModelInterface):
         
         return model, label_encoder
 
+    def evaluate_model_performance(self, y_true, y_pred, model_name="Model"):
+            """
+            Evalúa el rendimiento del modelo usando varias métricas de clasificación.
+
+            Parámetros:
+            -----------
+            y_true : array-like
+                Etiquetas verdaderas.
+
+            y_pred : array-like
+                Etiquetas predichas por el modelo.
+
+            model_name : str, opcional
+                Nombre del modelo para mostrar en los resultados (por defecto "Model").
+
+            Retorno:
+            --------
+            accuracy : float
+                La métrica de accuracy del modelo.
+            """
+
+            # Calcular las métricas
+            accuracy = accuracy_score(y_true, y_pred)
+            f1 = f1_score(y_true, y_pred, average='weighted')
+            precision = precision_score(y_true, y_pred, average='weighted')
+            recall = recall_score(y_true, y_pred, average='weighted')
+
+            # Mostrar los resultados
+            print(f"Resultados para {model_name}:")
+            print(f"Accuracy: {accuracy}")
+            print(f"F1 Score: {f1}")
+            print(f"Precision: {precision}")
+            print(f"Recall: {recall}")
+
+            return accuracy,f1,precision,recall

@@ -2,7 +2,7 @@ from datetime import datetime
 import pandas as pd
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
-from model.classifiermodel import ClassifierModel
+from pipeline.model.classifiermodel import ClassifierModel
 from pandas import DataFrame
 import numpy as np
 
@@ -33,7 +33,7 @@ class TestModelClassifier:
 
     def getDataframe(self, shuffle = False): 
         # Loads the dataset
-        self._dataframe = pd.read_csv('dataset/Maternal Health Risk Data Set.csv')
+        self._dataframe = pd.read_csv('dataset/MaternalHealthRiskDataSet.csv')
 
         if (shuffle):
             self._dataframe.sample(n=len(self._dataframe))
