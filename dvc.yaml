@@ -88,18 +88,21 @@ stages:
     outs:
       - model/svm_model.pkl
 
-  # train_logistic:
-  #   cmd: python pipeline/training/train_logistic.py data/preprocessed model
-  #   deps:
-  #     - pipeline/training/train_logistic.py
-  #     - data/preprocessed/train.csv
-  #     - data/preprocessed/test.csv
-  #   params:
-  #     - version_label
-  #     - mlflow.experiment_name
-  #     - mlflow.tracking_uri
-  #   outs:
-  #     - model/logistic_model.pkl
+  train_logistic:
+    cmd: python pipeline/training/train_logistic.py data/preprocessed model
+    deps:
+      - pipeline/training/train_logistic.py
+      - data/preprocessed/train.csv
+      - data/preprocessed/test.csv
+    params:
+      - train_logistic.seed
+      - train_logistic.C
+      - train_logistic.max_iter
+      - version_label
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - model/logistic_model.pkl
 
   evaluate_knn:
     cmd: python pipeline/evaluate.py data/preprocessed model knn_model
@@ -133,10 +136,10 @@ stages:
       - model/svm_model.pkl
     outs: []
 
-  # evaluate_logistic:
-  #   cmd: python pipeline/evaluate.py data/preprocessed model logistic_model
-  #   deps:
-  #     - pipeline/evaluate.py
-  #     - data/preprocessed/test.csv
-  #     - model/logistic_model.pkl
-  #   outs: []
+  evaluate_logistic:
+    cmd: python pipeline/evaluate.py data/preprocessed model logistic_model
+    deps:
+      - pipeline/evaluate.py
+      - data/preprocessed/test.csv
+      - model/logistic_model.pkl
+    outs: []

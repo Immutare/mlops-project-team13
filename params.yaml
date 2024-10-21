@@ -26,7 +26,12 @@ train_svm:
   C: [0.1, 1, 10]
   kernel: ['linear', 'rbf']
   gamma: ['scale', 'auto']
+train_logistic:
+  seed: 42
+  C: [0.001, 0.01, 0.1, 1, 10, 100, 1000]  
+  max_iter: [100, 200, 300, 500]          
+  solver: ['lbfgs', 'liblinear', 'saga']   
 mlflow:
   run_name: "Run for {model}"
-  experiment_name: "MaternalHealthRisk_V7"
+  experiment_name: "MaternalHealthRisk_Mariana"
   tracking_uri: "http://127.0.0.1:5000"
