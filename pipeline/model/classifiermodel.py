@@ -105,19 +105,19 @@ class ClassifierModel(InformalModelInterface):
         XT["BS"] = 1 / (X["BS"] + 1e-9)
 
         # Normalizar datos
-        # normalizer = MinMaxScaler()
+        normalizer = MinMaxScaler()
 
         # Aplicar la normalización
-        # XT_normalized = pd.DataFrame(
-        #     normalizer.fit_transform(XT), columns=XT.columns
-        # )
+        XT_normalized = pd.DataFrame(
+            normalizer.fit_transform(XT), columns=XT.columns
+        )
 
         # Codificar la variable target, debido a que las etiquetas son
         # high risk, mid risk y low risk.
         label_encoder = LabelEncoder()
         yt = label_encoder.fit_transform(y)
 
-        return XT, yt
+        return XT_normalized, yt
 
     def splitTrainTestVal(
         self,
