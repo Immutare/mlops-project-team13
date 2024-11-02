@@ -1,23 +1,22 @@
 import os
 import random
 import sys
+
 import pandas as pd
-from pandas import DataFrame
 import yaml
-
-def disproportionateSampling(dataframe: DataFrame, target: str = ''):
-    dataframe.groupby('Grade', group_keys=False).apply(lambda x: x.sample(2))
+from pandas import DataFrame
 
 
+def disproportionateSampling(dataframe: DataFrame, target: str = ""):
+    dataframe.groupby("Grade", group_keys=False).apply(lambda x: x.sample(2))
 
 
-def split_test_train(dataframe: DataFrame, trainSplit = 0.8, seed = 400):
+def split_test_train(dataframe: DataFrame, trainSplit=0.8, seed=400):
     # disproportionateDF = disproportionateSampling(dataframe, )
-    trainDataframe = dataframe.sample(frac=trainSplit,random_state=seed)
+    trainDataframe = dataframe.sample(frac=trainSplit, random_state=seed)
     testDataframe = dataframe.drop(trainDataframe.index).sample(frac=1.0)
 
     return trainDataframe, testDataframe
-
 
 
 def main():
@@ -26,7 +25,7 @@ def main():
     if len(sys.argv) != 2:
         sys.stderr.write("Arguments error. Usage:\n")
         sys.stderr.write("\tpython prepare.py data-file\n")
-        sys.exit(1) 
+        sys.exit(1)
 
     # Test data set split ratio
     trainSplit = params["train_split"]
@@ -45,6 +44,7 @@ def main():
 
     trainDataframe.to_csv(output_train_path, index=False)
     testDataframe.to_csv(output_test_path, index=False)
+
 
 if __name__ == "__main__":
     main()

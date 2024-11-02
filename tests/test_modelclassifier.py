@@ -1,10 +1,13 @@
 from datetime import datetime
+
+import numpy as np
 import pandas as pd
+from pandas import DataFrame
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
+
 from maternalhealth.pipeline.model.classifiermodel import ClassifierModel
-from pandas import DataFrame
-import numpy as np
+
 
 class TestModelClassifier:
     ACCURACY_THRESHOLD = 0.75
@@ -18,7 +21,7 @@ class TestModelClassifier:
     @property
     def model(self):
         return self._model
-    
+
     @model.setter
     def model(self, value):
         self._model = value
@@ -26,25 +29,25 @@ class TestModelClassifier:
     @property
     def dataframe(self):
         return self._dataframe
-    
+
     @dataframe.setter
     def dataframe(self, value):
         self._dataframe = value
 
-    def getDataframe(self, shuffle = False): 
+    def getDataframe(self, shuffle=False):
         # Loads the dataset
-        self._dataframe = pd.read_csv('dataset/MaternalHealthRiskDataSet.csv')
+        self._dataframe = pd.read_csv("dataset/MaternalHealthRiskDataSet.csv")
 
-        if (shuffle):
+        if shuffle:
             self._dataframe.sample(n=len(self._dataframe))
 
-        self._y = self._dataframe[['RiskLevel']].copy()
-        self._X = self._dataframe.drop(columns=['RiskLevel'])
+        self._y = self._dataframe[["RiskLevel"]].copy()
+        self._X = self._dataframe.drop(columns=["RiskLevel"])
 
-    def getOutliersFromDataframe(self, dataframe: DataFrame, threshold = 1.5):
-        if (self._model is None):
-            self._model = ClassifierModel(self._tag, asTesting = True)
-        
+    def getOutliersFromDataframe(self, dataframe: DataFrame, threshold=1.5):
+        if self._model is None:
+            self._model = ClassifierModel(self._tag, asTesting=True)
+
         threshold = self._model.IQ_LOWER_RANGE
         numericColumns = dataframe.select_dtypes(include=[np.number]).columns
 
@@ -56,19 +59,22 @@ class TestModelClassifier:
             IQR = Q3 - Q1
 
             # identify outliers
-            outliers = dataframe.where((dataframe[column] < (Q1 - threshold * IQR)) | (dataframe[column] > (Q3 + threshold * IQR)))
+            outliers = dataframe.where(
+                (dataframe[column] < (Q1 - threshold * IQR))
+                | (dataframe[column] > (Q3 + threshold * IQR))
+            )
             outliersCount = len(dataframe) - outliers[column].isna().sum()
 
             outliersDict[column] = int(outliersCount)
             print(column, outliersCount)
         return outliersDict
-    
+
     def test_handleOutliers(self):
-        if (self._model is None):
-            self._model = ClassifierModel(self._tag, asTesting = True)
-        if (self._dataframe is None):
+        if self._model is None:
+            self._model = ClassifierModel(self._tag, asTesting=True)
+        if self._dataframe is None:
             self.getDataframe()
-    
+
         dataframe = self._dataframe.copy().select_dtypes(include=[np.number])
 
         hasOutliers = True
@@ -77,8 +83,14 @@ class TestModelClassifier:
         outliersAfterPreporcessing = self.getOutliersFromDataframe(dfWithNoOutliers)
 
         for column in dataframe.select_dtypes(include=[np.number]).columns:
-            print(f"outliersBefore - {column}: ", outliersBeforePreporcessing[column])
-            print(f"outliersAfter - {column}: ", outliersAfterPreporcessing[column])
+            print(
+                f"outliersBefore - {column}: ",
+                outliersBeforePreporcessing[column],
+            )
+            print(
+                f"outliersAfter - {column}: ",
+                outliersAfterPreporcessing[column],
+            )
             if outliersAfterPreporcessing[column] > 0:
                 hasOutliers = False
                 break
@@ -86,7 +98,7 @@ class TestModelClassifier:
         # assert no error message has been registered, else print messages
         assert hasOutliers
 
-    '''
+    """
     def test_datapreprocessing_is_data_clean(self, threshold = 1.5):
         if (self._model is None):
             self._model = ClassifierModel(self._tag, asTesting = True)
@@ -97,14 +109,14 @@ class TestModelClassifier:
         errors = []
         if not dataframe.isnull().values.any() == False:
             errors.append("there are null values on the data")
-        
+
         hasOutliers = True
         outliersBeforePreporcessing = self.getOutliersFromDataframe(dataframe)
         dfWithNoOutliers = self._model.outlierHandler(dataframe)
-        outliersAfterPreporcessing = self.getOutliersFromDataframe(dfWithNoOutliers)
+        outliersAfterPreporcessing = self.getOutliersFromDataframe(dfWithNoOutliers)  # noqa: E501
 
         for column in dataframe.select_dtypes(include=[np.number]).columns:
-            if outliersBeforePreporcessing[column] == outliersAfterPreporcessing[column]:
+            if outliersBeforePreporcessing[column] == outliersAfterPreporcessing[column]:  # noqa: E501
                 hasOutliers = False
                 break
 
@@ -118,59 +130,74 @@ class TestModelClassifier:
         self._model.cleanAndPreprocessData(self._X, self._y)
 
         assert self._model.isnull().values.any() == False
-    '''
-    def measureClassifierAccuracy (self, model, X,  y, labelEncoder, acceptanceTreshold = 0.75) -> bool:
+    """
+
+    def measureClassifierAccuracy(
+        self, model, X, y, labelEncoder, acceptanceTreshold=0.75
+    ) -> bool:
         # Evaluar el modelo con el conjunto de prueba
         y_pred = model.predict(X)
 
         # Obtener el reporte de clasificación
-        report = classification_report(y, y_pred, target_names=labelEncoder.classes_, output_dict=True)
+        report = classification_report(
+            y, y_pred, target_names=labelEncoder.classes_, output_dict=True
+        )
 
-        return report['accuracy'] >= acceptanceTreshold
+        return report["accuracy"] >= acceptanceTreshold
 
     def test_TrainAndSaveRFModel(self):
-        if (self._dataframe is None):
+        if self._dataframe is None:
             self.getDataframe()
-        if (self._model is None):
-            self._model = ClassifierModel(self._tag, asTesting = True)
+        if self._model is None:
+            self._model = ClassifierModel(self._tag, asTesting=True)
 
+        Xt = self._model.normalizeData(
+            self._model.applyTransformations(self._model.outlierHandler(self._X))
+        )
 
-        Xt = self._model.normalizeData(self._model.applyTransformations(self._model.outlierHandler(self._X)))
-        
         yt, _ = self._model.labelEncoding(self._y, True)
-        
-        X_train, X_test, Y_train, Y_test = train_test_split(Xt, yt, test_size=0.2, random_state=self._model.RANDOM_STATE_SEED)
-        
+
+        X_train, X_test, Y_train, Y_test = train_test_split(
+            Xt, yt, test_size=0.2, random_state=self._model.RANDOM_STATE_SEED
+        )
+
         self._model.trainAndSaveRFModel(X_train, Y_train)
 
         isTestSuccessfull = False
         try:
-            model, labelEncoder = self._model.loadModel(model_type='RF')
-            isTestSuccessfull = self.measureClassifierAccuracy(model, X_test, Y_test, labelEncoder)
-        except:
+            model, labelEncoder = self._model.loadModel(model_type="RF")
+            isTestSuccessfull = self.measureClassifierAccuracy(
+                model, X_test, Y_test, labelEncoder
+            )
+        except Exception:
             print("Something went wrong loading the model")
-        
+
         assert isTestSuccessfull, "model accuracy didn't reach above 80%"
 
     def test_TrainAndSaveKNNModel(self):
-        if (self._dataframe is None):
+        if self._dataframe is None:
             self.getDataframe()
-        if (self._model is None):
-            self._model = ClassifierModel(self._tag, asTesting = True)
-        
+        if self._model is None:
+            self._model = ClassifierModel(self._tag, asTesting=True)
 
-        Xt = self._model.normalizeData(self._model.applyTransformations(self._model.outlierHandler(self._X)))
+        Xt = self._model.normalizeData(
+            self._model.applyTransformations(self._model.outlierHandler(self._X))
+        )
         yt, _ = self._model.labelEncoding(self._y, True)
-        
-        X_train, X_test, Y_train, Y_test = train_test_split(Xt, yt, test_size=0.2, random_state=self._model.RANDOM_STATE_SEED)
-        
+
+        X_train, X_test, Y_train, Y_test = train_test_split(
+            Xt, yt, test_size=0.2, random_state=self._model.RANDOM_STATE_SEED
+        )
+
         _ = self._model.trainAndSaveKNNModel(X_train, Y_train)
 
         isTestSuccessfull = False
         try:
-            model, labelEncoder = self._model.loadModel(model_type='KNN')
-            isTestSuccessfull = self.measureClassifierAccuracy(model, X_test, Y_test, labelEncoder)
-        except:
+            model, labelEncoder = self._model.loadModel(model_type="KNN")
+            isTestSuccessfull = self.measureClassifierAccuracy(
+                model, X_test, Y_test, labelEncoder
+            )
+        except Exception:
             print("Something went wrong loading the model")
-        
+
         assert isTestSuccessfull, "model accuracy didn't reach above 80%"
