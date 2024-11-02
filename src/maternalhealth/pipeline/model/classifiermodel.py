@@ -108,7 +108,9 @@ class ClassifierModel(InformalModelInterface):
         normalizer = MinMaxScaler()
 
         # Aplicar la normalización
-        XT_normalized = pd.DataFrame(normalizer.fit_transform(XT), columns=XT.columns)
+        XT_normalized = pd.DataFrame(
+            normalizer.fit_transform(XT), columns=XT.columns
+        )
 
         # Codificar la variable target, debido a que las etiquetas son
         # high risk, mid risk y low risk.
@@ -272,7 +274,9 @@ class ClassifierModel(InformalModelInterface):
             pd.DataFrame: Un nuevo DataFrame con los datos normalizados.
         """
         normalizer = MinMaxScaler()
-        normalized_data = pd.DataFrame(normalizer.fit_transform(X), columns=X.columns)
+        normalized_data = pd.DataFrame(
+            normalizer.fit_transform(X), columns=X.columns
+        )
         return normalized_data
 
     def dumpLabelEncoder(self, labelEncoder):
@@ -403,7 +407,9 @@ class ClassifierModel(InformalModelInterface):
         # Subgráficos para las curvas de densidad (KDE) en la segunda fila
         for i, col in enumerate(X.columns):
             ax_kde = plt.subplot(gs[1, i])
-            sns.kdeplot(X[col], ax=ax_kde, color="skyblue")  # Solo la línea de densidad
+            sns.kdeplot(
+                X[col], ax=ax_kde, color="skyblue"
+            )  # Solo la línea de densidad
 
         # Subgráfico para los boxplots en la tercera fila, de dos columnas
         ax_boxplots = plt.subplot(gs[2, :2])
@@ -421,7 +427,9 @@ class ClassifierModel(InformalModelInterface):
         # (columnas 2 y 3 de la tercera fila)
         ax_corr = plt.subplot(gs[2, 2:4])
         corr_matrix = X.corr()
-        sns.heatmap(corr_matrix, annot=True, ax=ax_corr, cmap="coolwarm", cbar=True)
+        sns.heatmap(
+            corr_matrix, annot=True, ax=ax_corr, cmap="coolwarm", cbar=True
+        )
         ax_corr.set_title("Correlation Matrix", fontsize=16)
 
         # Rotar etiquetas de la matriz de correlación en el eje x
@@ -431,7 +439,9 @@ class ClassifierModel(InformalModelInterface):
 
         # Subgráfico para la exploración de las clases de la variable objetivo,
         # ocupando las últimas dos columnas
-        ax_labels = plt.subplot(gs[2, 4:])  # Ocupa desde la columna 4 hasta el final
+        ax_labels = plt.subplot(
+            gs[2, 4:]
+        )  # Ocupa desde la columna 4 hasta el final
         y_values = Y.value_counts()
 
         # Gráfico de barras para la variable objetivo
@@ -619,7 +629,9 @@ class ClassifierModel(InformalModelInterface):
         class_weight = "balanced"
 
         # Entrenar el Modelo Random Forest
-        RF_Model = self.trainRF(X_train, Y_train, class_weight)  # Pasar class_weight
+        RF_Model = self.trainRF(
+            X_train, Y_train, class_weight
+        )  # Pasar class_weight
 
         # Guardar el modelo entrenado
         joblib.dump(RF_Model, self.rf_model_filename)
@@ -636,10 +648,14 @@ class ClassifierModel(InformalModelInterface):
         # Guardar el modelo entrenado
         joblib.dump(KNN_Model, self.knn_model_filename)
 
-        print(f"Modelo KNN guardado exitosamente como {self.knn_model_filename}.")
+        print(
+            f"Modelo KNN guardado exitosamente como {self.knn_model_filename}."
+        )
         return KNN_Model
 
-    def processAndTrainModels(self, X_train, Y_train, X_test, Y_test, label_encoder):
+    def processAndTrainModels(
+        self, X_train, Y_train, X_test, Y_test, label_encoder
+    ):
         """
         Realiza el procesamiento de datos, entrena los modelos KNN y
         Random Forest, evalúa su rendimiento, y guarda el mejor modelo y su
@@ -705,7 +721,9 @@ class ClassifierModel(InformalModelInterface):
         # rendimiento
         with open(self.comparison_filename, "w") as file:
             file.write(f"KNN Accuracy: {knn_accuracy}, F1-score: {knn_f1}\n")
-            file.write(f"Random Forest Accuracy: {rf_accuracy}, F1-score: {rf_f1}\n")
+            file.write(
+                f"Random Forest Accuracy: {rf_accuracy}, F1-score: {rf_f1}\n"
+            )
             file.write(f"Better Model: {better_model}\n")
 
         print(
@@ -741,7 +759,9 @@ class ClassifierModel(InformalModelInterface):
             knnModelFilename = (
                 f"{self.BASE_DUMP_DIRECTORY}knn_model_{version_label}.pkl"
             )
-            rfModelFilename = f"{self.BASE_DUMP_DIRECTORY}rf_model_{version_label}.pkl"
+            rfModelFilename = (
+                f"{self.BASE_DUMP_DIRECTORY}rf_model_{version_label}.pkl"
+            )
             labelEncoderFilename = (
                 f"{self.BASE_DUMP_DIRECTORY}label_encoder_{version_label}.pkl"
             )
