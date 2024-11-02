@@ -5,8 +5,8 @@ stages:
     deps:
     - path: dataset/MaternalHealthRiskDataSet.csv
       hash: md5
-      md5: bf5b0c23108f165d7f0b5019786fbcd7
-      size: 30292
+      md5: 4cde51d809a06974ea67493dc6721d29
+      size: 29275
     params:
       params.yaml:
         prepare.seed: 42
@@ -14,16 +14,16 @@ stages:
     outs:
     - path: data/prepared
       hash: md5
-      md5: 8584feeb8d76397f6ef8c7e6fc4a1a68.dir
-      size: 33097
+      md5: 0be84ba1ca093ae7f117c9617d065e09.dir
+      size: 32079
       nfiles: 2
   preprocess:
     cmd: python pipeline/preprocess.py data/prepared data/preprocessed
     deps:
     - path: data/prepared
       hash: md5
-      md5: 8584feeb8d76397f6ef8c7e6fc4a1a68.dir
-      size: 33097
+      md5: 0be84ba1ca093ae7f117c9617d065e09.dir
+      size: 32079
       nfiles: 2
     params:
       params.yaml:
@@ -31,27 +31,27 @@ stages:
     outs:
     - path: data/preprocessed
       hash: md5
-      md5: 39322a5bb8d71da2428f3910811881bf.dir
-      size: 102082
+      md5: 60ad267fbbcd67febf3faaaa8cbaa726.dir
+      size: 101686
       nfiles: 4
   train_knn:
     cmd: python pipeline/training/train_knn.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: data/preprocessed/train.csv
       hash: md5
-      md5: 5c4e8d37df793c0c64baf66d99062b62
-      size: 81282
+      md5: 0b91519b50e3df47cbefb7ed09816b13
+      size: 80827
     - path: pipeline/training/train_knn.py
       hash: md5
-      md5: b1a970e26c6b08a7cd3445ed32edf68d
-      size: 3348
+      md5: 857ad5563e1efc38fec7f6e9c70b6a2a
+      size: 3283
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V7
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_knn.n_neighbors:
         - 3
@@ -68,26 +68,26 @@ stages:
     outs:
     - path: model/knn_model.pkl
       hash: md5
-      md5: 60f3417653eea436aa70d5567581a7bb
-      size: 96598
+      md5: 627acd66b55c6795fc3817634f629c5c
+      size: 96630
   train_decision_tree:
     cmd: python pipeline/training/train_decisiontree.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: data/preprocessed/train.csv
       hash: md5
-      md5: 5c4e8d37df793c0c64baf66d99062b62
-      size: 81282
+      md5: 0b91519b50e3df47cbefb7ed09816b13
+      size: 80827
     - path: pipeline/training/train_decisiontree.py
       hash: md5
-      md5: 786924a04933015653e9a4224b761d79
-      size: 5023
+      md5: 48781225cd6b0b32dfc4c25d2147c719
+      size: 4744
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V7
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_decision_tree.criterion:
         - gini
@@ -106,26 +106,26 @@ stages:
     outs:
     - path: model/decision_tree_model.pkl
       hash: md5
-      md5: 85494911bfbf757c03e2d1f7fba2eaf8
-      size: 22529
+      md5: fef10ef993de899456ffef5fa25e6bb6
+      size: 22561
   train_random_forest:
     cmd: python pipeline/training/train_random_forest.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: data/preprocessed/train.csv
       hash: md5
-      md5: 5c4e8d37df793c0c64baf66d99062b62
-      size: 81282
+      md5: 0b91519b50e3df47cbefb7ed09816b13
+      size: 80827
     - path: pipeline/training/train_random_forest.py
       hash: md5
-      md5: c08ef53419665fc9f2a5b9af98d5c719
-      size: 4546
+      md5: 3dbbe9ab7c8502388ed1c4ca62ba3300
+      size: 4353
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V7
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_random_forest.criterion:
         - gini
@@ -156,26 +156,26 @@ stages:
     outs:
     - path: model/random_forest_model.pkl
       hash: md5
-      md5: 144695a6f4db55010272acfb520c190c
-      size: 857329
+      md5: 6f975f376691e7623561beb2d30be255
+      size: 857713
   train_svm:
     cmd: python pipeline/training/train_svm.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: data/preprocessed/train.csv
       hash: md5
-      md5: 5c4e8d37df793c0c64baf66d99062b62
-      size: 81282
+      md5: 0b91519b50e3df47cbefb7ed09816b13
+      size: 80827
     - path: pipeline/training/train_svm.py
       hash: md5
-      md5: 1f39096f1d0553815d3b9653d916101f
-      size: 4038
+      md5: bec6e312726ea8e0fb821f59c5ecf697
+      size: 3904
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V7
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_svm.C:
         - 0.1
@@ -192,26 +192,26 @@ stages:
     outs:
     - path: model/svm_model.pkl
       hash: md5
-      md5: 6306b7064579c63e409708bf83e97417
-      size: 51427
+      md5: 14db9c87dd6cb89b8bc0302085650631
+      size: 51235
   train_logistic:
     cmd: python pipeline/training/train_logistic.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: data/preprocessed/train.csv
       hash: md5
-      md5: 5c4e8d37df793c0c64baf66d99062b62
-      size: 81282
+      md5: 0b91519b50e3df47cbefb7ed09816b13
+      size: 80827
     - path: pipeline/training/train_logistic.py
       hash: md5
-      md5: d675c1f48311a32c3ec711e860195e2d
-      size: 3359
+      md5: 0e62b4228e1c6ad902c1bbc0efe9fa27
+      size: 3219
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V7
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_logistic.C:
         - 0.001
@@ -231,26 +231,26 @@ stages:
     outs:
     - path: model/logistic_model.pkl
       hash: md5
-      md5: 06d904f705469c677ba9e0715b6706ae
+      md5: 2c26a1c6de5539de5880ecca16bfc88b
       size: 1423
   train_xgboost:
     cmd: python pipeline/training/train_xgboost.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: data/preprocessed/train.csv
       hash: md5
-      md5: 5c4e8d37df793c0c64baf66d99062b62
-      size: 81282
+      md5: 0b91519b50e3df47cbefb7ed09816b13
+      size: 80827
     - path: pipeline/training/train_xgboost.py
       hash: md5
-      md5: c3ba58ab3ee7c2314f79382afe34798a
-      size: 3160
+      md5: f0074f6a6298f44f58e559d71015e6e9
+      size: 3077
     params:
       params.yaml:
-        mlflow.experiment_name: MaternalHealthRisk_V5
+        mlflow.experiment_name: MaternalHealthRisk_V7
         mlflow.tracking_uri: http://127.0.0.1:5000
         train_xgboost.learning_rate:
         - 0.1
@@ -269,95 +269,95 @@ stages:
     outs:
     - path: model/xgboost_model.pkl
       hash: md5
-      md5: 052ebbd52c63f77ab996942bd06bb75b
-      size: 739795
+      md5: ba17696791435b009ecfa154e3f1b671
+      size: 743535
   evaluate_knn:
     cmd: python pipeline/evaluate.py data/preprocessed model knn_model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: model/knn_model.pkl
       hash: md5
-      md5: 60f3417653eea436aa70d5567581a7bb
-      size: 96598
+      md5: 627acd66b55c6795fc3817634f629c5c
+      size: 96630
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 1ff1011f36e7e92f408869a1be62cbdd
-      size: 1731
+      md5: bf74febf03b6e2de7cd068d87c98d9a1
+      size: 1786
   evaluate_decision_tree:
     cmd: python pipeline/evaluate.py data/preprocessed model decision_tree_model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: model/decision_tree_model.pkl
       hash: md5
-      md5: 85494911bfbf757c03e2d1f7fba2eaf8
-      size: 22529
+      md5: fef10ef993de899456ffef5fa25e6bb6
+      size: 22561
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 1ff1011f36e7e92f408869a1be62cbdd
-      size: 1731
+      md5: bf74febf03b6e2de7cd068d87c98d9a1
+      size: 1786
   evaluate_random_forest:
     cmd: python pipeline/evaluate.py data/preprocessed model random_forest_model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: model/random_forest_model.pkl
       hash: md5
-      md5: 144695a6f4db55010272acfb520c190c
-      size: 857329
+      md5: 6f975f376691e7623561beb2d30be255
+      size: 857713
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 1ff1011f36e7e92f408869a1be62cbdd
-      size: 1731
+      md5: bf74febf03b6e2de7cd068d87c98d9a1
+      size: 1786
   evaluate_svm:
     cmd: python pipeline/evaluate.py data/preprocessed model svm_model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: model/svm_model.pkl
       hash: md5
-      md5: 6306b7064579c63e409708bf83e97417
-      size: 51427
+      md5: 14db9c87dd6cb89b8bc0302085650631
+      size: 51235
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 1ff1011f36e7e92f408869a1be62cbdd
-      size: 1731
+      md5: bf74febf03b6e2de7cd068d87c98d9a1
+      size: 1786
   evaluate_logistic:
     cmd: python pipeline/evaluate.py data/preprocessed model logistic_model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: model/logistic_model.pkl
       hash: md5
-      md5: 06d904f705469c677ba9e0715b6706ae
+      md5: 2c26a1c6de5539de5880ecca16bfc88b
       size: 1423
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 1ff1011f36e7e92f408869a1be62cbdd
-      size: 1731
+      md5: bf74febf03b6e2de7cd068d87c98d9a1
+      size: 1786
   evaluate_xgboost:
     cmd: python pipeline/evaluate.py data/preprocessed model xgboost_model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
-      md5: 4376d23272fa9280fcd10ff73212c7f7
-      size: 19670
+      md5: 782881a6c1e240bfb2e6d82eccdfb321
+      size: 19729
     - path: model/xgboost_model.pkl
       hash: md5
-      md5: 052ebbd52c63f77ab996942bd06bb75b
-      size: 739795
+      md5: ba17696791435b009ecfa154e3f1b671
+      size: 743535
     - path: pipeline/evaluate.py
       hash: md5
-      md5: 1ff1011f36e7e92f408869a1be62cbdd
-      size: 1731
+      md5: bf74febf03b6e2de7cd068d87c98d9a1
+      size: 1786
