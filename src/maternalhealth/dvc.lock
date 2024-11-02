@@ -14,16 +14,26 @@ stages:
     outs:
     - path: data/prepared
       hash: md5
+<<<<<<< Updated upstream
       md5: 8584feeb8d76397f6ef8c7e6fc4a1a68.dir
       size: 33097
+=======
+      md5: eae5259acd3db545382286ec5bd471d4.dir
+      size: 33095
+>>>>>>> Stashed changes
       nfiles: 2
   preprocess:
     cmd: python pipeline/preprocess.py data/prepared data/preprocessed
     deps:
     - path: data/prepared
       hash: md5
+<<<<<<< Updated upstream
       md5: 8584feeb8d76397f6ef8c7e6fc4a1a68.dir
       size: 33097
+=======
+      md5: eae5259acd3db545382286ec5bd471d4.dir
+      size: 33095
+>>>>>>> Stashed changes
       nfiles: 2
     params:
       params.yaml:
@@ -31,20 +41,34 @@ stages:
     outs:
     - path: data/preprocessed
       hash: md5
+<<<<<<< Updated upstream
       md5: 39322a5bb8d71da2428f3910811881bf.dir
       size: 102082
+=======
+      md5: 42ca66e167baab7d42893e4738b87724.dir
+      size: 102596
+>>>>>>> Stashed changes
       nfiles: 4
   train_knn:
     cmd: python pipeline/training/train_knn.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
+<<<<<<< Updated upstream
       md5: 4376d23272fa9280fcd10ff73212c7f7
       size: 19670
     - path: data/preprocessed/train.csv
       hash: md5
       md5: 5c4e8d37df793c0c64baf66d99062b62
       size: 81282
+=======
+      md5: 84456a2d02bfb133b00f976e510d23c0
+      size: 19933
+    - path: data/preprocessed/train.csv
+      hash: md5
+      md5: d8f63b05ca88c3c7c4634701be890ba8
+      size: 81533
+>>>>>>> Stashed changes
     - path: pipeline/training/train_knn.py
       hash: md5
       md5: b1a970e26c6b08a7cd3445ed32edf68d
@@ -68,19 +92,32 @@ stages:
     outs:
     - path: model/knn_model.pkl
       hash: md5
+<<<<<<< Updated upstream
       md5: 60f3417653eea436aa70d5567581a7bb
+=======
+      md5: e140fa9a5e8289f7d921194faed0f8d4
+>>>>>>> Stashed changes
       size: 96598
   train_decision_tree:
     cmd: python pipeline/training/train_decisiontree.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
+<<<<<<< Updated upstream
       md5: 4376d23272fa9280fcd10ff73212c7f7
       size: 19670
     - path: data/preprocessed/train.csv
       hash: md5
       md5: 5c4e8d37df793c0c64baf66d99062b62
       size: 81282
+=======
+      md5: 84456a2d02bfb133b00f976e510d23c0
+      size: 19933
+    - path: data/preprocessed/train.csv
+      hash: md5
+      md5: d8f63b05ca88c3c7c4634701be890ba8
+      size: 81533
+>>>>>>> Stashed changes
     - path: pipeline/training/train_decisiontree.py
       hash: md5
       md5: 786924a04933015653e9a4224b761d79
@@ -106,19 +143,56 @@ stages:
     outs:
     - path: model/decision_tree_model.pkl
       hash: md5
+<<<<<<< Updated upstream
       md5: 85494911bfbf757c03e2d1f7fba2eaf8
       size: 22529
+=======
+      md5: a1642a2e7d1ec92b1c6a1ece469f341b
+      size: 22529
+  evaluate:
+    cmd: python pipeline/evaluate.py data/preprocessed model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 060ff3c090006e219c5db19717655941
+      size: 19452
+    - path: model/decision_tree_model.pkl
+      hash: md5
+      md5: fef10ef993de899456ffef5fa25e6bb6
+      size: 22561
+    - path: model/knn_model.pkl
+      hash: md5
+      md5: 627acd66b55c6795fc3817634f629c5c
+      size: 96630
+    - path: model/random_forest_model.pkl
+      hash: md5
+      md5: 6f975f376691e7623561beb2d30be255
+      size: 857713
+    - path: pipeline/evaluate.py
+      hash: md5
+      md5: ea577921d9671d74fd0a41b242645390
+      size: 2071
+>>>>>>> Stashed changes
   train_random_forest:
     cmd: python pipeline/training/train_random_forest.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
+<<<<<<< Updated upstream
       md5: 4376d23272fa9280fcd10ff73212c7f7
       size: 19670
     - path: data/preprocessed/train.csv
       hash: md5
       md5: 5c4e8d37df793c0c64baf66d99062b62
       size: 81282
+=======
+      md5: 84456a2d02bfb133b00f976e510d23c0
+      size: 19933
+    - path: data/preprocessed/train.csv
+      hash: md5
+      md5: d8f63b05ca88c3c7c4634701be890ba8
+      size: 81533
+>>>>>>> Stashed changes
     - path: pipeline/training/train_random_forest.py
       hash: md5
       md5: c08ef53419665fc9f2a5b9af98d5c719
@@ -156,19 +230,78 @@ stages:
     outs:
     - path: model/random_forest_model.pkl
       hash: md5
+<<<<<<< Updated upstream
       md5: 144695a6f4db55010272acfb520c190c
       size: 857329
+=======
+      md5: 2e75ff486007672d2b323821734d58ef
+      size: 857329
+  evaluate_knn:
+    cmd: python pipeline/evaluate.py data/preprocessed model knn_model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 84456a2d02bfb133b00f976e510d23c0
+      size: 19933
+    - path: model/knn_model.pkl
+      hash: md5
+      md5: e140fa9a5e8289f7d921194faed0f8d4
+      size: 96598
+    - path: pipeline/evaluate.py
+      hash: md5
+      md5: 1ff1011f36e7e92f408869a1be62cbdd
+      size: 1731
+  evaluate_decision_tree:
+    cmd: python pipeline/evaluate.py data/preprocessed model decision_tree_model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 84456a2d02bfb133b00f976e510d23c0
+      size: 19933
+    - path: model/decision_tree_model.pkl
+      hash: md5
+      md5: a1642a2e7d1ec92b1c6a1ece469f341b
+      size: 22529
+    - path: pipeline/evaluate.py
+      hash: md5
+      md5: 1ff1011f36e7e92f408869a1be62cbdd
+      size: 1731
+  evaluate_random_forest:
+    cmd: python pipeline/evaluate.py data/preprocessed model random_forest_model
+    deps:
+    - path: data/preprocessed/test.csv
+      hash: md5
+      md5: 84456a2d02bfb133b00f976e510d23c0
+      size: 19933
+    - path: model/random_forest_model.pkl
+      hash: md5
+      md5: 2e75ff486007672d2b323821734d58ef
+      size: 857329
+    - path: pipeline/evaluate.py
+      hash: md5
+      md5: 1ff1011f36e7e92f408869a1be62cbdd
+      size: 1731
+>>>>>>> Stashed changes
   train_svm:
     cmd: python pipeline/training/train_svm.py data/preprocessed model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
+<<<<<<< Updated upstream
       md5: 4376d23272fa9280fcd10ff73212c7f7
       size: 19670
     - path: data/preprocessed/train.csv
       hash: md5
       md5: 5c4e8d37df793c0c64baf66d99062b62
       size: 81282
+=======
+      md5: 84456a2d02bfb133b00f976e510d23c0
+      size: 19933
+    - path: data/preprocessed/train.csv
+      hash: md5
+      md5: d8f63b05ca88c3c7c4634701be890ba8
+      size: 81533
+>>>>>>> Stashed changes
     - path: pipeline/training/train_svm.py
       hash: md5
       md5: 1f39096f1d0553815d3b9653d916101f
@@ -192,6 +325,7 @@ stages:
     outs:
     - path: model/svm_model.pkl
       hash: md5
+<<<<<<< Updated upstream
       md5: 6306b7064579c63e409708bf83e97417
       size: 51427
   train_logistic:
@@ -316,21 +450,35 @@ stages:
       hash: md5
       md5: 1ff1011f36e7e92f408869a1be62cbdd
       size: 1731
+=======
+      md5: 78d010ff752be5f167d5c304e8fe0ed7
+      size: 51187
+>>>>>>> Stashed changes
   evaluate_svm:
     cmd: python pipeline/evaluate.py data/preprocessed model svm_model
     deps:
     - path: data/preprocessed/test.csv
       hash: md5
+<<<<<<< Updated upstream
       md5: 4376d23272fa9280fcd10ff73212c7f7
       size: 19670
     - path: model/svm_model.pkl
       hash: md5
       md5: 6306b7064579c63e409708bf83e97417
       size: 51427
+=======
+      md5: 84456a2d02bfb133b00f976e510d23c0
+      size: 19933
+    - path: model/svm_model.pkl
+      hash: md5
+      md5: 78d010ff752be5f167d5c304e8fe0ed7
+      size: 51187
+>>>>>>> Stashed changes
     - path: pipeline/evaluate.py
       hash: md5
       md5: 1ff1011f36e7e92f408869a1be62cbdd
       size: 1731
+<<<<<<< Updated upstream
   evaluate_logistic:
     cmd: python pipeline/evaluate.py data/preprocessed model logistic_model
     deps:
@@ -361,3 +509,5 @@ stages:
       hash: md5
       md5: 1ff1011f36e7e92f408869a1be62cbdd
       size: 1731
+=======
+>>>>>>> Stashed changes

@@ -2,7 +2,7 @@ from datetime import datetime
 import pandas as pd
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
-from pipeline.model.classifiermodel import ClassifierModel
+from maternalhealth.pipeline.model.classifiermodel import ClassifierModel
 from pandas import DataFrame
 import numpy as np
 
