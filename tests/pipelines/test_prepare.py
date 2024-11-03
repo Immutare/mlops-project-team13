@@ -1,13 +1,6 @@
-import pandas as pd
 import pytest
 
 from maternalhealth.pipeline.prepare import split_test_train
-
-
-def get_dataset():
-    return pd.read_csv(
-        "src/maternalhealth/dataset/MaternalHealthRiskDataSet.csv"
-    )
 
 
 @pytest.mark.parametrize(
@@ -19,11 +12,10 @@ def get_dataset():
         (0.2, 42),
     ],
 )
-def test_split_test_train(train_split, seed):
-    dataframe = get_dataset()
-    train, test = split_test_train(dataframe, train_split, seed)
+def test_split_test_train(train_split, seed, raw_dataset):
+    train, _ = split_test_train(raw_dataset, train_split, seed)
 
-    split_train_total = len(dataframe) * train_split
+    split_train_total = len(raw_dataset) * train_split
 
     assert (len(train) > split_train_total - 1) and (
         len(train) < split_train_total + 1

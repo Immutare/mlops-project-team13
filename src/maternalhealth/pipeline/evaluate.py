@@ -9,6 +9,18 @@ import yaml
 from maternalhealth.pipeline.model.classifiermodel import ClassifierModel
 
 
+def load_testdf(path, filename="test.csv"):
+    test_data = pd.read_csv(os.path.join(path, filename))
+    X_test = test_data.drop(columns=["RiskLevel"])
+    y_test = test_data["RiskLevel"]
+
+    return X_test, y_test
+
+
+def load_model(path, filename):
+    return joblib.load(os.path.join(path, f"{filename}.pkl"))
+
+
 def main():
     if len(sys.argv) != 4:
         sys.stderr.write("Arguments error. Usage:\n")
@@ -21,12 +33,10 @@ def main():
     model_path = sys.argv[2]  # Ruta donde se guardó el modelo entrenado
     model_name = sys.argv[3]  # Nombre del modelo
 
-    test_data = pd.read_csv(os.path.join(in_path, "test.csv"))
-    X_test = test_data.drop(columns=["0"])
-    y_test = test_data["0"]
+    X_test, y_test = load_testdf(in_path)
 
     # Cargar el modelo entrenado
-    model = joblib.load(os.path.join(model_path, f"{model_name}.pkl"))
+    model = load_model(model_path, model_name)
 
     mlflow_params = yaml.safe_load(open("params.yaml"))["mlflow"]
 

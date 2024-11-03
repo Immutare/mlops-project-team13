@@ -54,8 +54,8 @@ def main():
 
     # Separar las características (X) y el target (y) de los datos
     # preprocesados
-    X_train = train_data.drop(columns=["0"])  # Cambia 'RiskLevel' a '0'
-    y_train = train_data["0"]  # Cambia 'RiskLevel' a '0'
+    X_train = train_data.drop(columns=["RiskLevel"])
+    y_train = train_data["RiskLevel"]
 
     # Cargar los parámetros del archivo params.yaml
     params = yaml.safe_load(open("params.yaml"))["train_xgboost"]

@@ -5,6 +5,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import yaml
+from sklearn.calibration import LabelEncoder
 
 from maternalhealth.pipeline.model.classifiermodel import ClassifierModel
 
@@ -22,9 +23,14 @@ def getDataSet(inputFolder, fileName):
     return dataframe
 
 
-def transformDF(dataframe: pd.DataFrame):
-    params = yaml.safe_load(open("params.yaml"))["version_label"]
-    classifierModel = ClassifierModel(params)
+def transformDF(
+    dataframe: pd.DataFrame, **kwargs
+) -> tuple[pd.DataFrame, LabelEncoder]:
+    classifierModel = ClassifierModel(
+        versionLabel=kwargs.get("version_label") or "0.0",
+        randomSeed=kwargs.get("seed"),
+        asTesting=kwargs.get("testing") == "Y",
+    )
 
     # Split the dataset from numeric
     numericColumns = dataframe.drop(
@@ -49,7 +55,10 @@ def transformDF(dataframe: pd.DataFrame):
     )
 
     transformedDataframe = pd.concat(
-        [numericTransformed, pd.DataFrame(targetTransformed, dtype=int)],
+        [
+            numericTransformed,
+            pd.Series(targetTransformed, dtype=int).rename("RiskLevel"),
+        ],
         axis=1,
     )
 
@@ -73,6 +82,7 @@ def saveTransformedDataFrame(
 
 
 def main():
+    params = yaml.safe_load(open("params.yaml"))
     np.set_printoptions(suppress=True)
 
     if len(sys.argv) != 3:
@@ -90,8 +100,12 @@ def main():
     trainInputDF = getDataSet(in_path, "train.csv")
     testInputDF = getDataSet(in_path, "test.csv")
 
-    transformedTrainDF, trainLabelEncoder = transformDF(trainInputDF)
-    transformedTestDF, testLabelEncoder = transformDF(testInputDF)
+    transformedTrainDF, trainLabelEncoder = transformDF(
+        dataframe=trainInputDF, **params
+    )
+    transformedTestDF, testLabelEncoder = transformDF(
+        dataframe=testInputDF, **params
+    )
 
     saveTransformedDataFrame(transformedTrainDF, out_path, "train.csv")
     saveLabelEncoder(trainLabelEncoder, out_path, "train_label_encoder.pkl")
