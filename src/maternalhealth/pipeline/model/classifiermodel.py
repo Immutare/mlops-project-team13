@@ -1,5 +1,3 @@
-from typing import Any
-
 import joblib
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
@@ -34,19 +32,19 @@ class ClassifierModel(InformalModelInterface):
         self._model = value
 
     @property
-    def IQ_LOWER_RANGE(self) -> Any | float:
+    def IQ_LOWER_RANGE(self) -> float:
         return self._IQ_LOWER_RANGE
 
     @IQ_LOWER_RANGE.setter
-    def IQ_LOWER_RANGE(self, value):
+    def IQ_LOWER_RANGE(self, value: float):
         self._IQ_LOWER_RANGE = value
 
     @property
-    def label_encoder_filename(self) -> Any | str:
+    def label_encoder_filename(self) -> str:
         return self._label_encoder_filename
 
     @label_encoder_filename.setter
-    def label_encoder_filename(self, value):
+    def label_encoder_filename(self, value: str):
         self._label_encoder_filename = value
 
     def __init__(self, versionLabel: str, randomSeed=42, asTesting=False):
