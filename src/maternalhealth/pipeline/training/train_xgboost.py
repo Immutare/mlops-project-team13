@@ -21,7 +21,9 @@ def train_xgboost(X, y, **kwargs):
     xgb_model = xgb.XGBClassifier()
 
     # Create the GridSearchCV object
-    grid_search = GridSearchCV(xgb_model, parameters, cv=5, scoring=kwargs["scoring"])
+    grid_search = GridSearchCV(
+        xgb_model, parameters, cv=5, scoring=kwargs["scoring"]
+    )
 
     # Ajustar el modelo con los datos de entrenamiento
     grid_search.fit(X, y)
@@ -80,7 +82,9 @@ def main():
 
         # Guardar el run_id para compartirlo con evaluate.py
         run_id = run.info.run_id
-        with open(os.path.join(out_path, "mlflow_run_id_xgboost_model.txt"), "w") as f:
+        with open(
+            os.path.join(out_path, "mlflow_run_id_xgboost_model.txt"), "w"
+        ) as f:
             f.write(run_id)
 
     # Guardar el modelo en el directorio de salida

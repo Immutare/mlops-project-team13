@@ -72,7 +72,9 @@ def main():
     # Entrenar y guardar el modelo Logistic Regression usando los parámetros
     # de `params.yaml`
     with mlflow.start_run(run_name=run_name) as run:
-        logistic_model, best_params = train_logistic(X_train, y_train, **params)
+        logistic_model, best_params = train_logistic(
+            X_train, y_train, **params
+        )
 
         # Guardar los mejores hiperparámetros en MLflow
         mlflow.log_params(best_params)
@@ -82,13 +84,17 @@ def main():
 
         # Guardar el run_id para compartirlo con evaluate.py
         run_id = run.info.run_id
-        with open(os.path.join(out_path, "mlflow_run_id_logistic_model.txt"), "w") as f:
+        with open(
+            os.path.join(out_path, "mlflow_run_id_logistic_model.txt"), "w"
+        ) as f:
             f.write(run_id)
 
     # Guardar el modelo en el directorio de salida
     model_output_path = os.path.join(out_path, "logistic_model.pkl")
     joblib.dump(logistic_model, model_output_path)
-    sys.stderr.write(f"Modelo Logistic Regression guardado en {model_output_path}\n")
+    sys.stderr.write(
+        f"Modelo Logistic Regression guardado en {model_output_path}\n"
+    )
 
 
 if __name__ == "__main__":

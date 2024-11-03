@@ -63,7 +63,9 @@ def trainTree(X, Y, **kwargs):
 def main():
     if len(sys.argv) != 3:
         sys.stderr.write("Arguments error. Usage:\n")
-        sys.stderr.write("\tpython train.py preprocessed-dir-path model-dir-path\n")
+        sys.stderr.write(
+            "\tpython train.py preprocessed-dir-path model-dir-path\n"
+        )
         sys.exit(1)
 
     in_path = sys.argv[1]  # Ruta de los datos preprocesados
@@ -98,7 +100,9 @@ def main():
     # Entrenar y guardar el modelo DecisionTree usando los parámetros de
     # `params.yaml`
     with mlflow.start_run(run_name=run_name) as run:
-        decision_tree_model, best_params = trainTree(X_train, y_train, **params)
+        decision_tree_model, best_params = trainTree(
+            X_train, y_train, **params
+        )
 
         # Guardar los mejores hiperparámetros en MLflow
         mlflow.log_params(best_params)

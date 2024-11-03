@@ -64,7 +64,9 @@ def trainSVM(X, Y, **kwargs):
 def main():
     if len(sys.argv) != 3:
         sys.stderr.write("Arguments error. Usage:\n")
-        sys.stderr.write("\tpython train.py preprocessed-dir-path model-dir-path\n")
+        sys.stderr.write(
+            "\tpython train.py preprocessed-dir-path model-dir-path\n"
+        )
         sys.exit(1)
 
     in_path = sys.argv[1]  # Ruta de los datos preprocesados
@@ -108,7 +110,9 @@ def main():
 
         # Guardar el run_id para compartirlo con evaluate.py
         run_id = run.info.run_id
-        with open(os.path.join(out_path, "mlflow_run_id_svm_model.txt"), "w") as f:
+        with open(
+            os.path.join(out_path, "mlflow_run_id_svm_model.txt"), "w"
+        ) as f:
             f.write(run_id)
 
     # Guardar el modelo en el directorio de salida
