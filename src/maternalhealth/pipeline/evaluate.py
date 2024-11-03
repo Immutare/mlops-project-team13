@@ -5,7 +5,8 @@ import joblib
 import mlflow
 import pandas as pd
 import yaml
-from model.classifiermodel import ClassifierModel
+
+from maternalhealth.pipeline.model.classifiermodel import ClassifierModel
 
 
 def main():
@@ -42,9 +43,7 @@ def main():
     )
 
     # Cargar el run_id almacenado por train.py
-    with open(
-        os.path.join(model_path, f"mlflow_run_id_{model_name}.txt"), "r"
-    ) as f:
+    with open(os.path.join(model_path, f"mlflow_run_id_{model_name}.txt"), "r") as f:
         run_id = f.read().strip()
 
     mlflow.set_experiment(mlflow_params["experiment_name"])

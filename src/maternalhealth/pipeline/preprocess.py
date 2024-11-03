@@ -5,7 +5,8 @@ import joblib
 import numpy as np
 import pandas as pd
 import yaml
-from model.classifiermodel import ClassifierModel
+
+from maternalhealth.pipeline.model.classifiermodel import ClassifierModel
 
 
 def getDataSet(inputFolder, fileName):
@@ -14,9 +15,7 @@ def getDataSet(inputFolder, fileName):
     """
     filePath = os.path.join(inputFolder, fileName)
     dataframe = pd.read_csv(filePath, encoding="utf-8")
-    sys.stderr.write(
-        f"The input data frame {fileName} size is {dataframe.shape}\n"
-    )
+    sys.stderr.write(f"The input data frame {fileName} size is {dataframe.shape}\n")
 
     return dataframe
 
@@ -31,9 +30,7 @@ def transformDF(dataframe: pd.DataFrame):
     )
 
     numericTransformed = classifierModel.outlierHandler(numericColumns)
-    numericTransformed = classifierModel.applyTransformations(
-        numericTransformed
-    )
+    numericTransformed = classifierModel.applyTransformations(numericTransformed)
     numericTransformed = classifierModel.normalizeData(numericTransformed)
 
     # Transform target
@@ -43,9 +40,7 @@ def transformDF(dataframe: pd.DataFrame):
     targetColumn = nonNumeric[["RiskLevel"]].copy()
     # bypass = nonNumeric.drop("RiskLevel", axis=1)
 
-    targetTransformed, labelEncoder = classifierModel.labelEncoding(
-        targetColumn
-    )
+    targetTransformed, labelEncoder = classifierModel.labelEncoding(targetColumn)
 
     transformedDataframe = pd.concat(
         [numericTransformed, pd.DataFrame(targetTransformed, dtype=int)],
@@ -62,9 +57,7 @@ def saveLabelEncoder(labelEncoder, outputFolder, fileName):
     sys.stderr.write(f"LabelEncoder [{fileName}] saved on {outputPath}\n")
 
 
-def saveTransformedDataFrame(
-    transformedDF: pd.DataFrame, outputFolder, fileName
-):
+def saveTransformedDataFrame(transformedDF: pd.DataFrame, outputFolder, fileName):
     outputPath = os.path.join(outputFolder, fileName)
 
     transformedDF.to_csv(outputPath, index=False)
@@ -76,9 +69,7 @@ def main():
 
     if len(sys.argv) != 3:
         sys.stderr.write("Arguments error. Usage:\n")
-        sys.stderr.write(
-            "\tpython featurization.py data-dir-path features-dir-path\n"
-        )
+        sys.stderr.write("\tpython featurization.py data-dir-path features-dir-path\n")
         sys.exit(1)
 
     in_path = sys.argv[1]  # previous step folder

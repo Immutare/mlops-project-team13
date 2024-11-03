@@ -7,8 +7,9 @@ import pandas as pd
 import yaml
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# import ../model/classifiermodel.py
-from model.classifiermodel import ClassifierModel  # noqa: E402
+from maternalhealth.pipeline.model.classifiermodel import (  # noqa: E402
+    ClassifierModel,
+)
 
 
 def main():
