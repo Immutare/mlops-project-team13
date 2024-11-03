@@ -5,7 +5,9 @@ from maternalhealth.pipeline.prepare import split_test_train
 
 
 def get_dataset():
-    return pd.read_csv("src/maternalhealth/dataset/MaternalHealthRiskDataSet.csv")
+    return pd.read_csv(
+        "src/maternalhealth/dataset/MaternalHealthRiskDataSet.csv"
+    )
 
 
 @pytest.mark.parametrize(
@@ -23,4 +25,6 @@ def test_split_test_train(train_split, seed):
 
     split_train_total = len(dataframe) * train_split
 
-    assert (len(train) > split_train_total - 1) and (len(train) < split_train_total + 1)
+    assert (len(train) > split_train_total - 1) and (
+        len(train) < split_train_total + 1
+    )

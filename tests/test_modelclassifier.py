@@ -12,7 +12,9 @@ from maternalhealth.pipeline.model.classifiermodel import ClassifierModel
 class TestModelClassifier:
     ACCURACY_THRESHOLD = 0.75
     PRECISION_THRESHOLD = 0.75
-    _tag = "tester_{date}".format(date=datetime.today().strftime("%B%d_%Y__%H%M%S"))
+    _tag = "tester_{date}".format(
+        date=datetime.today().strftime("%B%d_%Y__%H%M%S")
+    )
     _model = None
     _dataframe = None
     _X = None
@@ -80,7 +82,9 @@ class TestModelClassifier:
         hasOutliers = True
         outliersBeforePreporcessing = self.getOutliersFromDataframe(dataframe)
         dfWithNoOutliers = self._model.outlierHandler(dataframe)
-        outliersAfterPreporcessing = self.getOutliersFromDataframe(dfWithNoOutliers)
+        outliersAfterPreporcessing = self.getOutliersFromDataframe(
+            dfWithNoOutliers
+        )
 
         for column in dataframe.select_dtypes(include=[np.number]).columns:
             print(
@@ -143,7 +147,8 @@ class TestModelClassifier:
             y, y_pred, target_names=labelEncoder.classes_, output_dict=True
         )
 
-        return report["accuracy"] >= acceptanceTreshold
+        # TODO: report should be  a typed dict to avoid parsing to bool
+        return bool(report["accuracy"] >= acceptanceTreshold)
 
     def test_TrainAndSaveRFModel(self):
         if self._dataframe is None:
@@ -152,7 +157,9 @@ class TestModelClassifier:
             self._model = ClassifierModel(self._tag, asTesting=True)
 
         Xt = self._model.normalizeData(
-            self._model.applyTransformations(self._model.outlierHandler(self._X))
+            self._model.applyTransformations(
+                self._model.outlierHandler(self._X)
+            )
         )
 
         yt, _ = self._model.labelEncoding(self._y, True)
@@ -181,7 +188,9 @@ class TestModelClassifier:
             self._model = ClassifierModel(self._tag, asTesting=True)
 
         Xt = self._model.normalizeData(
-            self._model.applyTransformations(self._model.outlierHandler(self._X))
+            self._model.applyTransformations(
+                self._model.outlierHandler(self._X)
+            )
         )
         yt, _ = self._model.labelEncoding(self._y, True)
 
