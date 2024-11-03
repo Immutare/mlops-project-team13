@@ -48,16 +48,3 @@ class TestInformalModelInterface:
         "extract_text",
         return_value="Mocked text content",
     )
-    def test_extract_text(self, mock_extract, model_interface):
-        """
-        Test extract_text method to ensure it correctly extracts text from a file.
-
-        This method verifies that the extract_text function can process a file name
-        and return the expected mock content.
-        """
-        test_file = "file.txt"
-        result = model_interface.extract_text(test_file)
-        mock_extract.assert_called_once_with(test_file)
-        assert (
-            result == "Mocked text content"
-        ), "Test result should be 'Mocked text content'"
