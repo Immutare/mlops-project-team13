@@ -1,11 +1,14 @@
 """
-Unit tests for the ClassifierModel class, including verification of initialization,
-property setting, and data cleaning/preprocessing.
+Unit tests for the ClassifierModel class,
+including verification of initialization,
+property setting, and data
+cleaning/preprocessing.
 """
 
 import numpy as np
 import pandas as pd
 import pytest
+
 from maternalhealth.pipeline.model.classifiermodel import ClassifierModel
 
 
@@ -16,7 +19,8 @@ def mock_model(mocker):
 
 
 class TestClassifierModel:
-    """Tests for ClassifierModel, including initialization, properties, and data preprocessing."""
+    """Tests for ClassifierModel, including initialization, properties,
+    and data preprocessing."""
 
     @pytest.fixture
     def classifier_model(self):
@@ -24,7 +28,8 @@ class TestClassifierModel:
         return ClassifierModel(versionLabel="v1")
 
     def test_initialization(self, classifier_model):
-        """Test that ClassifierModel initializes with the correct attributes."""
+        """Test that ClassifierModel initializes with the correct
+        attributes."""
         assert classifier_model._model is None
         assert classifier_model.IQ_LOWER_RANGE == 1.5
         assert classifier_model.RANDOM_STATE_SEED == 42
@@ -63,7 +68,8 @@ class TestClassifierModel:
         np.testing.assert_array_equal(predictions, np.array([0, 1]))
 
     def test_predict_without_model(self, classifier_model):
-        """Test the predict method raises an exception when no model is loaded."""
+        """Test the predict method raises an exception when
+        no model is loaded."""
         with pytest.raises(Exception, match="Couldn't find a model"):
             classifier_model.predict(pd.DataFrame())
 
@@ -148,12 +154,14 @@ class TestClassifierModel:
     def test_label_encoding(self, classifier_model):
         """Test the labelEncoding method."""
         Y_test = pd.Series(["high risk", "mid risk", "low risk", "high risk"])
-
         Y_encoded = classifier_model.labelEncoding(Y_test)
-
-        assert list(Y_encoded) == [
-            0,
-            2,
-            1,
-            0,
-        ]
+        newdat = [item for item in Y_encoded]
+        np.testing.assert_array_equal(
+            newdat[0],
+            [
+                0,
+                2,
+                1,
+                0,
+            ],
+        )
