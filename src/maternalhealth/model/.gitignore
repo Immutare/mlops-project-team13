@@ -1,0 +1,12 @@
+/knn_model.pkl
+/mlflow_run_id_knn_model.txt
+/decision_tree_model.pkl
+/mlflow_run_id_decision_tree_model.txt
+/random_forest_model.pkl
+/mlflow_run_id_random_forest_model.txt
+/svm_model.pkl
+/mlflow_run_id_svm_model.txt
+/logistic_model.pkl
+/mlflow_run_id_logistic_model.txt
+/xgboost_model.pkl
+/mlflow_run_id_xgboost_model.txt
