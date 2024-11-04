@@ -132,3 +132,22 @@ También se pueden correr manualmente los hooks en todo el repositorio, con el s
 ```
 pre-commit run --all-files
 ```
+## 5. Model Governance
+### Documentación y Reproducibilidad
+
+- **MLflow para Gestión de Experimentos**: Cada experimento fue registrado en MLflow, incluyendo sus hiperparámetros y métricas de clasificación.
+- **DAG en DVC**: Se creó un DAG en DVC para definir y ejecutar las etapas del proyecto de manera ordenada, asegurando la reproducibilidad del flujo de trabajo.
+
+### Control de Versiones
+
+- **Versionamiento de Datos con DVC y Google Drive**: Los datos fueron versionados con DVC y almacenados en Google Drive para garantizar seguridad y accesibilidad.
+- **Registro y Versionado de Modelos en MLflow**: La característica de Model Registry de MLflow permite registrar y versionar modelos, facilitando la restauración de versiones anteriores para revisiones o auditorías.
+- **Control de Versiones de Código en GitHub**: El uso de GitHub para el control de versiones del código refuerza la trazabilidad de los cambios en el desarrollo.
+### Validación del Modelo
+
+- **Evaluación de Modelos**: Cada modelo fue entrenado y evaluado con métricas clave para el problema de clasificación de riesgos de embarazo.
+- **Métricas en MLflow**: Las métricas registradas en MLflow incluyen accuracy, precision, recall y f1 score, lo que permite validar y comparar los modelos.
+
+### Seguridad y Control de Acceso
+
+- **Permisos en DVC y Google Drive**: Al integrar DVC con Google Drive, es posible configurar permisos de edición y visualización para controlar el acceso a los datos.
