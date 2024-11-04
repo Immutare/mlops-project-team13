@@ -1,11 +1,3 @@
-#MLFlow
-mlruns/
-model/mlflow_run_id.txt
-
-#Tests
-dump/
-
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
