@@ -26,7 +26,7 @@ def train_xgboost(X, y, **kwargs):
     )
 
     # Ajustar el modelo con los datos de entrenamiento
-    grid_search.fit(X, y)
+    grid_search.fit(X.values, y)
 
     # Obtener el mejor modelo encontrado
     best_xgboost_model = grid_search.best_estimator_
