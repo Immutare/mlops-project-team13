@@ -38,5 +38,5 @@ train_xgboost:
   scoring: "accuracy"
 mlflow:
   run_name: "Run for {model}"
-  experiment_name: "MaternalHealthRisk_V7"
+  experiment_name: "MaternalHealthRisk_V8"
   tracking_uri: "http://127.0.0.1:5000"
