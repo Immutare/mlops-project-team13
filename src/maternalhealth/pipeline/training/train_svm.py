@@ -52,7 +52,7 @@ def trainSVM(X, Y, **kwargs):
     )
 
     # Ajustar el modelo con los datos de entrenamiento
-    grid_search.fit(X, Y)
+    grid_search.fit(X.values, Y)
 
     # Obtener los mejores hiperparámetros encontrados
     best_svm_model = grid_search.best_estimator_

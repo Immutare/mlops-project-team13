@@ -58,7 +58,7 @@ def train_random_forest(X, Y, **kwargs):
     )
 
     # Ajustar el modelo con los datos de entrenamiento
-    grid_search.fit(X, Y)
+    grid_search.fit(X.values, Y)
 
     # Obtener los mejores hiperparámetros encontrados
     best_random_forest_model = grid_search.best_estimator_
